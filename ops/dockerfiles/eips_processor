@@ -1,0 +1,17 @@
+FROM python:3.6
+
+ENV WORKDIR /usr/src/eips_exposed
+
+WORKDIR $WORKDIR
+
+# Do this for caching purposes so deps don't have to be installed on every
+# single file change
+COPY requirement*.txt $WORKDIR/
+RUN pip install -r requirements.txt
+RUN pip install -r requirements.dev.txt
+
+COPY . $WORKDIR/
+
+RUN pip install .
+
+CMD ./start_processor.sh
