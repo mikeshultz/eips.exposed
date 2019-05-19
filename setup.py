@@ -1,5 +1,3 @@
-import sys
-import shutil
 import importlib.util
 from pathlib import Path
 from setuptools import setup, find_packages
@@ -30,7 +28,7 @@ setup(
     description='Solidity development tools for creating Ethereum smart contracts',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/mikeshultz/solidbyte',
+    url='https://github.com/mikeshultz/eips.exposed',
     author=eips_exposed_init.__author__,
     author_email=eips_exposed_init.__email__,
     classifiers=[
@@ -41,7 +39,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='solidity ethereum development',
+    keywords='ethereum development eip improvement proposal',
     packages=find_packages(exclude=['docs', 'tests', 'scripts', 'build']),
     install_requires=requirements_to_list('requirements.txt'),
     extras_require={

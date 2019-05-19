@@ -9,7 +9,6 @@ from eips_exposed.common.db import (
     get_latest_commit,
     EIP as DBEIP,
     Commit as DBCommit,
-    EIPCommit as DBEIPCommit,
 )
 from eips_exposed.common.exceptions import EIPParseError
 from eips_exposed.processor import parse_eip
@@ -117,7 +116,6 @@ def process() -> None:
             history = file_history(fil)
 
             for comm_hash in history:
-                #DBEIPCommit(commit_hash=comm_hash, eip_id=eip.eip_id)
                 eip_db_obj.commits.append(db_commits[comm_hash])
 
             db_session.merge(eip_db_obj)

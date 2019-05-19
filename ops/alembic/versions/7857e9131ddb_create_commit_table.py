@@ -5,7 +5,7 @@ Revises: 4a09f47e77ff
 Create Date: 2019-05-18 14:48:47.050917
 
 """
-from sqlalchemy import Column, ForeignKey, Integer, Sequence, String, Text, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, DateTime
 from alembic import op
 
 

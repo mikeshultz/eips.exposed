@@ -1,9 +1,7 @@
 from contextlib import contextmanager
 from sqlalchemy import (
-    func,
     create_engine,
     Table,
-    Sequence,
     ForeignKey,
     Column,
     Integer,
@@ -65,7 +63,7 @@ class Commit(Base):
 
     commit_hash = Column(String(40), primary_key=True)
     committer = Column(String(), nullable=False)
-    committed_date = Column( DateTime(), nullable=False)
+    committed_date = Column(DateTime(), nullable=False)
     message = Column(Text())
 
     eips = relationship('EIP', secondary=EIPCommit)

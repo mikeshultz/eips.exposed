@@ -1,8 +1,6 @@
 import tornado.web
-from tornado.ioloop import IOLoop
-
-#from graphene_tornado.schema import schema
 from graphene_tornado.tornado_graphql_handler import TornadoGraphQLHandler
+
 from eips_exposed.server.schema import schema
 
 

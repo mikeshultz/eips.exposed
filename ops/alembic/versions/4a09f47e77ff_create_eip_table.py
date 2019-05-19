@@ -1,7 +1,7 @@
 """create eip table
 
 Revision ID: 4a09f47e77ff
-Revises: 
+Revises:
 Create Date: 2019-05-18 08:45:26.280668
 
 """

@@ -111,7 +111,9 @@ class EIP:
             # Check the get_by_val attrs since they could return None
             assert self.eip_type is not None, 'Failed to resolve type: {}'.format(headers['type'])
             assert self.status is not None, 'Failed to resolve status: {}'.format(headers['status'])
-            assert self.created is not None, 'Failed to resolve created: {}'.format(headers['created'])
+            assert self.created is not None, 'Failed to resolve created: {}'.format(
+                headers['created']
+            )
         except (KeyError, AssertionError) as err:
             log.debug(headers)
             raise EIPParseError('EIP missing header {}'.format(err))

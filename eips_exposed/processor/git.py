@@ -1,4 +1,3 @@
-import time
 from typing import Optional, List
 from pathlib import Path
 from git import Repo
