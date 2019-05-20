@@ -1,0 +1,122 @@
+@import '~bulma/sass/utilities/_all.sass';
+@import '~bulma/sass/base/_all.sass';
+@import '~bulma/sass/elements/content.sass';
+@import '~bulma/sass/elements/container.sass';
+@import '~bulma/sass/elements/title.sass';
+@import '~bulma/sass/elements/tag.sass';
+@import '~bulma/sass/elements/other.sass';
+@import '~bulma/sass/components/level.sass';
+@import '~bulma/sass/components/card.sass';
+@import '~bulma/sass/layout/section.sass';
+@import '~bulma/sass/layout/footer.sass';
+@import '~bulma/sass/grid/columns.sass';
+
+@import url('https://fonts.googleapis.com/css?family=Biryani&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Martel+Sans&display=swap');
+
+$light-bg: #F5F5F5;
+$med-bg: #BDBDBD;
+
+body {
+    background: #C4DCE8;
+    font-family: "Martel Sans", sans-serif;
+}
+
+h1,h2,h3,h4,h5 {
+    font-family: "Biryani", sans-serif;
+}
+
+header {
+    nav {
+        .brand {
+            /*padding: 1rem 0;
+            position: relative;
+            transition: transform .5s cubic-bezier(.31,2.71,.8,.9);
+            transform-origin: 50% 50%;
+
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                image-rendering: optimizeSpeed;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                image-rendering: -webkit-crisp-edges;
+                image-rendering: crisp-edges;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: pixelated;
+                -ms-interpolation-mode: nearest-neighbor
+            }
+            &:hover {
+                transform: scale(1.05);
+            }*/
+            h1 {
+                clear: both;
+                .exposed {
+                    color: $red;
+                }
+            }
+        }
+    }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+#tag-container {
+    margin-top: 2rem;
+    .tags {
+        .tag {
+            @extend .is-light;
+        }
+    }
+}
+
+#eips {
+    padding: 0;
+    .column {
+        width: 33%;
+    }
+    .eip {
+        display: block;
+        margin: 1rem;
+        min-height: 15rem;
+        .media-left {
+            padding-right: 1rem;
+        }
+        .tags {
+            padding: 0.5rem;
+            .tag {
+                background: $med-bg;
+                color: $white;
+            }
+        }
+        &.card {
+            background: $light-bg;
+            .card-content {
+                color: $grey;
+            }
+        }
+    }
+}
+
+#eip-detail {
+    margin-top: 2rem;
+    .container {
+        background: $light-bg;
+    }
+    .tags {
+        padding: 0.5rem;
+        .tag {
+            background: $med-bg;
+            color: $white;
+        }
+    }
+}
+
+a.tag {
+    &:hover {
+        text-decoration: none;
+    }
+}
