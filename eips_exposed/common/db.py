@@ -1,6 +1,8 @@
 from contextlib import contextmanager
 from sqlalchemy import (
     create_engine,
+    func,
+    distinct,
     Table,
     ForeignKey,
     Column,
@@ -9,6 +11,7 @@ from sqlalchemy import (
     Enum,
     DateTime,
     Text,
+    Boolean,
 )
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -26,6 +29,15 @@ EIPCommit = Table(
     Base.metadata,
     Column('eip_commit_id', Integer, primary_key=True),
     Column('commit_hash', Integer, ForeignKey('commit.commit_hash'), nullable=False),
+    Column('eip_id', Integer, ForeignKey('eip.eip_id'), nullable=False),
+)
+
+
+EIPTag = Table(
+    'eip_tag',
+    Base.metadata,
+    Column('eip_tag_id', Integer, primary_key=True),
+    Column('tag_name', String, ForeignKey('tag.tag_name'), nullable=False),
     Column('eip_id', Integer, ForeignKey('eip.eip_id'), nullable=False),
 )
 
@@ -53,6 +65,7 @@ class EIP(Base):
     full_text = Column(Text)
 
     commits = relationship('Commit', secondary=EIPCommit)
+    tags = relationship('Tag', secondary=EIPTag)
 
     def __repr__(self):
         return '<EIP (eip_id={})>'.format(self.eip_id)
@@ -70,6 +83,21 @@ class Commit(Base):
 
     def __repr__(self):
         return '<Commit (commit_hash={})>'.format(self.commit_hash)
+
+
+class Tag(Base):
+    __tablename__ = 'tag'
+
+    tag_name = Column(String(), primary_key=True)
+    active = Column(Boolean(), default=False, nullable=False)
+
+    eips = relationship('EIP', secondary=EIPTag)
+
+    def __repr__(self):
+        return '<Tag (tag_name={})>'.format(self.tag_name)
+
+    def __str__(self):
+        return self.tag_name
 
 
 def get_session():
@@ -90,3 +118,28 @@ def yield_session(commit=False):
 def get_latest_commit():
     with yield_session() as sess:
         return sess.query(Commit).order_by(Commit.committed_date.desc()).first()
+
+
+def get_total_eips():
+    with yield_session() as sess:
+        return sess.query(func.count(EIP.eip_id)).first()[0]
+
+
+def get_total_commits():
+    with yield_session() as sess:
+        return sess.query(func.count(Commit.commit_hash)).first()[0]
+
+
+def get_total_committers():
+    with yield_session() as sess:
+        return sess.query(func.count(distinct(Commit.committer))).first()[0]
+
+
+def get_all_tags():
+    with yield_session() as sess:
+        return sess.query(Tag).order_by(Tag.tag_name).all()
+
+
+def get_eip_tags(eip_id):
+    with yield_session() as sess:
+        return sess.query(Tag).filter(Tag.eips.any(eip_id=eip_id)).order_by(Tag.tag_name).all()

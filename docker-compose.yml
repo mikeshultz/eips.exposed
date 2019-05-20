@@ -25,7 +25,7 @@ services:
     ports:
       - "8080:8080"
 
-  eips_api:
+  eips_web:
     build:
       context: .
       dockerfile: ./ops/dockerfiles/eips_api

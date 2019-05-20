@@ -35,4 +35,5 @@ def upgrade():
 
 
 def downgrade():
+    op.drop_table(eip_commit_table_name)
     op.drop_table(commit_table_name)
