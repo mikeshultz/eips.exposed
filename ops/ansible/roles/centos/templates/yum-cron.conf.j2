@@ -1,0 +1,15 @@
+[commands]
+update_cmd = minimal-security
+update_messages = yes
+download_updates = yes
+apply_updates = yes
+random_sleep = 3600
+
+[emitters]
+system_name = None
+emit_via = email
+output_width = 80
+
+[email]
+email_from = root@{{ ansible_nodename }}
+email_to = {{ ops_email }}

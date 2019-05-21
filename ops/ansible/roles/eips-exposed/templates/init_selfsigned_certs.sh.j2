@@ -1,0 +1,19 @@
+#!/bin/sh
+# Create self-signed certs just so we can bring up nginx
+
+DOMAIN=("$1")
+
+dom_path="/etc/letsencrypt/live/$DOMAIN"
+
+echo "Creating directory $dom_path"
+mkdir -p $dom_path
+
+if [[ -f "$dom_path/privkey.pem" ]]; then
+    echo "Private key exists.  Skipping..."
+else
+    echo "Creating self-signed cert for $DOMAIN"
+    openssl req -x509 -nodes -newkey rsa:1024 -days 1\
+        -keyout "$dom_path/privkey.pem" \
+        -out "$dom_path/fullchain.pem" \
+        -subj "/CN=$DOMAIN"
+fi

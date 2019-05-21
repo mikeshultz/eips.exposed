@@ -1,0 +1,18 @@
+---
+- hosts: eips.exposed
+  become: yes
+  become_method: sudo
+  vars:
+    docker_users:
+      - mike
+    docker_install_compose: true
+    fail2ban_services:
+      - name: sshd
+    fail2ban_destemail: hostmaster@mikes.network
+    ops_email: hostmaster@mikes.network
+    letsencrypt_email: hostmaster@mikes.network
+  roles:
+    - centos
+    - fail2ban
+    - docker
+    - eips-exposed

@@ -1,0 +1,10 @@
+---
+eips_exposed_srcdir: /usr/src/eips.exposed
+letsencrypt_keysize: 4096
+# This is also in scripts and docker-compose.yml
+letsencrypt_webroot: /var/www/certbot
+# These need to be grouped by how the certs will be generated, so whatever.com
+# and www.whatever.com go on the same cert
+letsencrypt_domains:
+  - "eips.exposed www.eips.exposed"
+  - graphql.eips.exposed

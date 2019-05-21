@@ -1,0 +1,10 @@
+---
+- include_tasks: core.yaml
+  become: yes
+  become_method: sudo
+  when: ansible_os_family == "RedHat" and ansible_distribution == 'CentOS'
+
+- include_tasks: firewalld.yaml
+  become: yes
+  become_method: sudo
+  when: ansible_os_family == "RedHat"

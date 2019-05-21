@@ -1,0 +1,37 @@
+---
+- name: Install EPEL
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install packages
+  yum:
+    name:
+      - htop
+      - yum-cron
+      - libselinux-python
+      - fail2ban
+      - whois
+    state: present
+
+- name: "Set root mail alias to ops@lunyr.com"
+  lineinfile:
+    path: /etc/aliases
+    regexp: "root:[\\s]+[\\w@\\.\\-]+"
+    line: "root:          {{ ops_email }}"
+
+- name: copy yum-cron.conf
+  template:
+    src: ../templates/yum-cron.conf.j2
+    dest: /etc/yum/yum-cron.conf
+    owner: root
+    group: wheel
+    mode: 0664
+  tags: yum-cron
+
+- name: enable yum-cron service 
+  service: 
+    name: yum-cron
+    state: started
+    enabled: yes
+  tags: yum-cron

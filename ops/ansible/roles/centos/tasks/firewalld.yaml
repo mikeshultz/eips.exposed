@@ -1,0 +1,20 @@
+---
+- name: make sure firewalld is installed
+  yum: 
+    name: firewalld
+    state: latest
+  tags: firewalld
+
+- name: enable firewalld service 
+  service: 
+    name: firewalld
+    state: started
+    enabled: yes
+  tags: firewalld
+
+- name: ensure SSH access allowed
+  firewalld:
+    state: enabled
+    zone: public
+    service: ssh
+    permanent: true
