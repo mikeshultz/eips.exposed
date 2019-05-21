@@ -1,0 +1,39 @@
+---
+- name: install fail2ban
+  yum:
+    name: fail2ban
+    state: present
+  tags: fail2ban
+
+- name: configure jail.local
+  template:
+    src: ../templates/jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    mode: '0644'
+  tags: fail2ban
+  notify: restart_fail2ban
+
+- name: configure jail.conf
+  template:
+    src: ../templates/jail.conf.j2
+    dest: /etc/fail2ban/jail.conf
+    mode: '0644'
+  tags: fail2ban
+  notify: restart_fail2ban
+
+- name: enable fail2ban service 
+  service: 
+    name: fail2ban
+    state: started
+    enabled: yes
+  tags: fail2ban
+
+- name: get jail status
+  command: fail2ban-client status
+  register: fail2ban_status
+  tags: fail2ban
+
+- name: show fail2ban status
+  debug:
+    msg: "{{ fail2ban_status }}"
+  tags: fail2ban
