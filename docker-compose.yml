@@ -44,3 +44,5 @@ services:
       - /var/www/certbot:/var/www/certbot
     # depends_on:
     #   - eips_web
+    ports:
+      - "80:80"
