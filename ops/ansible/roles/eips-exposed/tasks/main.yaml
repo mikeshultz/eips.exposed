@@ -76,7 +76,7 @@
 #     state: present
 #     timeout: 30
 - name: build images
-  shell: docker-compose build
+  shell: docker-compose build --build-arg GRAPHQL_SERVER=https://graphql.eips.exposed/graphql
   args:
     chdir: "{{ eips_exposed_srcdir }}"
 
@@ -84,6 +84,13 @@
   shell: docker-compose up -d {{ explicit_containers_string }}
   args:
     chdir: "{{ eips_exposed_srcdir }}"
+
+- name: ensure localhost is trusted
+  firewalld:
+    state: present
+    zone: trusted
+    interface: lo
+    permanent: true
 
 - name: ensure HTTP access allowed
   firewalld:
