@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
 
-  eips_processor:
+  processor:
     build:
       context: .
       dockerfile: ./ops/dockerfiles/eips_processor
@@ -23,7 +23,7 @@ services:
       - EIPS_SERVER_PORT=8080
       - EIPS_LOCAL_REPO=/tmp/eips
 
-  eips_graphql:
+  graphql:
     build:
       context: .
       dockerfile: ./ops/dockerfiles/eips_api
@@ -36,16 +36,16 @@ services:
     ports:
       - "8080:8080"
 
-  eips_frontend:
+  frontend:
     build:
       context: .
       dockerfile: ./ops/dockerfiles/eips_frontend
       args:
         GRAPHQL_URL: http://localhost:8080/graphql
     depends_on:
-      - eips_graphql
+      - graphql
     ports:
-      - "3000:3000"
+      - "5000:5000"
 
   nginx:
     image: nginx:mainline

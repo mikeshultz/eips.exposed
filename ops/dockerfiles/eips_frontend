@@ -4,20 +4,22 @@ ENV WORKDIR /usr/src/eips_frontend
 
 WORKDIR $WORKDIR
 
+RUN yarn global add serve
+
 # Do this for caching purposes so deps don't have to be installed on every
 # single file change
 COPY eips_frontend/package.json $WORKDIR/package.json
 RUN yarn install --modules-folder /usr/src/eips_frontend/node_modules
 
-RUN ls -lah $WORKDIR
-
 COPY ./eips_frontend/public $WORKDIR/public
 COPY ./eips_frontend/src $WORKDIR/src
-# COPY ./eips_frontend/package.json $WORKDIR/package.json
-
+COPY ./ops/conf/serve.config.json /etc/serve.json
 RUN yarn install
+RUN yarn run build
 
 ARG GRAPHQL_URL
 ENV REACT_APP_GRAPHQL_URL=$GRAPHQL_URL
 
-CMD yarn start
+WORKDIR $WORKDIR/build
+
+CMD serve -s -c /etc/serve.json

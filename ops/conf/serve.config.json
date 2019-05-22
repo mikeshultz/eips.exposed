@@ -1,0 +1,5 @@
+{
+    "cleanUrls": true,
+    "directoryListing": false,
+    "public": "/usr/src/eips_frontend/build"
+}
