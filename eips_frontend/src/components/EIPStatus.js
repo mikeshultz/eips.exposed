@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import { EIPS_STATUSES } from '../const';
-import Tags from './Tags';
 
 class EIPStatus extends React.Component {
   render () {

@@ -2,6 +2,10 @@
  * Useful constants
  */
 
+export const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL ?
+  process.env.REACT_APP_GRAPHQL_URL :
+  'https://graphql.eips.exposed/graphql';
+
 // Mapping to resolve Enums from graphql
 export const EIPS_STATUSES = {
   DRAFT: {
