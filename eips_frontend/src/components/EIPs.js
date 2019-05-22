@@ -24,7 +24,8 @@ class EIPs extends React.Component {
     });
 
     return (
-      <section id="eips" className="section is-clearfix">
+      <section id="eips" className="loading-overlay-parent section is-clearfix">
+        <div className={this.props.loading ? `loading-overlay` : `hide`}></div>
         <div className="columns">
           <div className="column">
             {colOne}

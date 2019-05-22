@@ -15,7 +15,7 @@ class App extends React.Component {
         <div className="App">
           <Query query={getStats}>
             {({ loading, error, data }) => {
-              return (<Header stats={data.stats} />)
+              return (<Header loading={loading} stats={data ? data.stats : null} />)
             }}
           </Query>
 

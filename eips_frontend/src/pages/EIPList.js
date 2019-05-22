@@ -33,12 +33,12 @@ class EIPList extends React.Component {
 
         <Query query={getEIPs} variables={variables}>
           {({ loading, error, data }) => {
-            if (loading) return "Loading...";
             if (error) return `Error! ${error.message}`;
           
             return (
               <EIPs
-                eips={data.eips}
+                loading={loading}
+                eips={data && data.eips ? data.eips : []}
                 />
             )
           }}

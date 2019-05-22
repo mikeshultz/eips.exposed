@@ -75,6 +75,8 @@ code {
 
 #eips {
     padding: 0;
+    min-height: 150rem;
+    margin-top: 2rem;
     .column {
         width: 33%;
     }
@@ -118,5 +120,18 @@ code {
 a.tag {
     &:hover {
         text-decoration: none;
+    }
+}
+
+.loading-overlay-parent {
+    overflow: hidden;
+    position: relative;
+    .loading-overlay {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #EFEFEF;
+        opacity: 0.75;
     }
 }

@@ -7,7 +7,8 @@ class Header extends React.Component {
     const logoWidth = 500; // orig: 723;
     const logoHeight = 102; // orig: 147;
     return (
-      <header className="App-header">
+      <header className="App-header loading-overlay-parent">
+        <div className={this.props.loading ? `loading-overlay` : `hide`}></div>
         <nav className="level">
           <div className="level-item has-text-centered">
             <div>
