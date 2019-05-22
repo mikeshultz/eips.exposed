@@ -46,3 +46,4 @@ services:
     #   - eips_web
     ports:
       - "80:80"
+      - "443:443"
