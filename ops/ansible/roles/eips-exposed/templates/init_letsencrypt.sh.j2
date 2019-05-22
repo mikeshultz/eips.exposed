@@ -1,0 +1,57 @@
+#!/bin/sh
+# Stand up nginx SSL by first creating self-signed certs just so we can bring
+# up nginx, then removing them, then running certbot.  It's a little fucky. It
+# must be run in the source directory with docker-compose.yml
+
+DOMAINS=("$@")
+CERTBOT_COMMAND="certbot-2" # For CentOS 7 with python 2.7...
+KEY_SIZE={{ letsencrypt_keysize }}
+EMAIL="{{ letsencrypt_email }}"
+NGINX_CONTAINER_NAME="{{ nginx_container_name }}"
+
+dom_path="/etc/letsencrypt/live/$DOMAIN"
+
+echo "Creating directory $dom_path"
+mkdir -p $dom_path
+
+if [[ -f "$dom_path/privkey.pem" ]]; then
+    echo "Private key exists.  Exiting..."
+    exit 0
+else
+    echo "Creating self-signed cert for ${DOMAINS[0]}"
+    openssl req -x509 -nodes -newkey rsa:1024 -days 1\
+        -keyout "$dom_path/privkey.pem" \
+        -out "$dom_path/cert.pem" \
+        -subj "/CN=${DOMAINS[0]}"
+fi
+
+docker-compose up -d --force-recreate $NGINX_CONTAINER_NAME
+
+# Make sure nginx came up
+if [ $? -ne 0 ]; then
+    echo "NGINX did not come up!"
+    exit 1
+fi
+
+# Remove the self-signed certs now that nginx is up
+rm -rf $dom_path
+
+#Join $domains to -d args
+domain_args=""
+for domain in "${DOMAINS[@]}"; do
+    domain_args="$domain_args -d $domain"
+done
+
+# Select appropriate email arg
+case "$EMAIL" in
+    "") email_arg="--register-unsafely-without-email" ;;
+    *) email_arg="--email $EMAIL" ;;
+esac
+
+echo "Running certbot..."
+$CERTBOT_COMMAND certonly --webroot -w {{ letsencrypt_webroot }} \
+    $email_arg \
+    $domain_args \
+    --rsa-key-size $KEY_SIZE \
+    --agree-tos \
+    --force-renewal

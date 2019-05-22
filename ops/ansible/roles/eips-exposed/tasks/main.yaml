@@ -1,26 +1,31 @@
 ---
 
-- name: make sure bad deps are not installed
-  yum:
-    name:
-      - python-docker-py
-      - docker-compose
-    state: absent
+# - name: make sure bad deps are not installed
+#   yum:
+#     name:
+#       - python-docker-py
+#       - docker-compose
+#       - certbot         # old
+#       - pyOpenSSL       # soooo... old
+#       - python-urllib3  # bones are dust
+#     state: absent
 
 - name: install deps
   yum:
     name: 
       - git
-      - certbot
       - python2-pip
+      - docker-compose
+      - python2-certbot
     state: present
   tags: letsencrypt
 
-- name: install python deps
-  pip:
-    name: 
-      - docker
-      - docker-compose
+# - name: install python deps
+#   pip:
+#     name: 
+#       - docker
+#       - docker-compose
+#       - certbot
 
 - name: create ~/.bin if necessary
   file:
@@ -28,24 +33,31 @@
     state: directory
     mode: '0700'
 
-- name: create init_selfsigned_certs
+- name: create /etc/letsencrypt if necessary
+  file:
+    path: /etc/letsencrypt
+    state: directory
+    mode: '0755' # eh?
+
+- name: create certbot webroot if necessary
+  file:
+    path: "{{ letsencrypt_webroot }}"
+    state: directory
+    mode: '0755' # eh?
+
+# - name: create init_selfsigned_certs
+#   template:
+#     src: ../templates/init_selfsigned_certs.sh.j2
+#     dest: ~/.bin/init_selfsigned_certs.sh
+#     mode: '0755'
+#   tags: letsencrypt
+
+- name: create init_letsencrypt.sh
   template:
-    src: ../templates/init_selfsigned_certs.sh.j2
-    dest: ~/.bin/init_selfsigned_certs.sh
+    src: ../templates/init_letsencrypt.sh.j2
+    dest: ~/.bin/init_letsencrypt.sh
     mode: '0755'
   tags: letsencrypt
-
-- name: create init_certbot.sh
-  template:
-    src: ../templates/init_certbot.sh.j2
-    dest: ~/.bin/init_certbot.sh.sh
-    mode: '0755'
-  tags: letsencrypt
-
-- name: create temporary self-signed certificates for eips.exposed
-  shell: "bash ~/.bin/init_selfsigned_certs.sh {{ item }}"
-  tags: letsencrypt
-  with_items: "{{ letsencrypt_domains }}"
 
 - debug:
     msg: "!!!!!!!!!!!!!!!!!!!!"
@@ -56,17 +68,22 @@
     dest: "{{ eips_exposed_srcdir }}"
     update: yes
 
-- name: build images and bring up docker containers
-  docker_service:
-    build: yes
-    project_src: "{{ eips_exposed_srcdir }}"
-    state: present
-    timeout: 30
+# Can't get new enough python modules...
+# - name: build images and bring up docker containers
+#   docker_service:
+#     build: yes
+#     project_src: "{{ eips_exposed_srcdir }}"
+#     state: present
+#     timeout: 30
+- name: build images
+  shell: docker-compose build
+  args:
+    chdir: "{{ eips_exposed_srcdir }}"
 
-- name: "get certs from letsencrypt - {{ item }}"
-  shell: "bash  ~/.bin/init_certbot.sh {{ item }}"
-  tags: letsencrypt
-  with_items: "{{ letsencrypt_domains }}"
+- name: bring up all containers EXCEPT nginx
+  shell: docker-compose up -d {{ explicit_containers_string }}
+  args:
+    chdir: "{{ eips_exposed_srcdir }}"
 
 - name: ensure HTTP access allowed
   firewalld:
@@ -81,3 +98,10 @@
     zone: public
     service: https
     permanent: true
+
+- name: create and setup certificates
+  shell: "bash ~/.bin/init_letsencrypt.sh {{ item }}"
+  args:
+    chdir: "{{ eips_exposed_srcdir }}"
+  tags: letsencrypt
+  with_items: "{{ letsencrypt_domains }}"

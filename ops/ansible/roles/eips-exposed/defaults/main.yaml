@@ -8,3 +8,4 @@ letsencrypt_webroot: /var/www/certbot
 letsencrypt_domains:
   - "eips.exposed www.eips.exposed"
   - graphql.eips.exposed
+nginx_container_name: nginx

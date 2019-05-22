@@ -3,6 +3,7 @@
   become: yes
   become_method: sudo
   vars:
+    explicit_containers_string: "postgres eips_processor eips_web"
     docker_users:
       - mike
     docker_install_compose: true
