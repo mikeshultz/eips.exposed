@@ -7,6 +7,7 @@ import EIPStatus from './EIPStatus';
 class EIP extends React.Component {
   render () {
     const { eipId, eipType, status, category, title, tags } = this.props.eip
+    const tagObjs = tags.map(tag => ({ tagName: tag }))
     return (
       <div className="eip card">
         <Link to={`/eip/${eipId}`}>
@@ -37,7 +38,7 @@ class EIP extends React.Component {
           </div>
         </Link>
         <footer className="card-footer">
-          <Tags tags={tags} />
+          <Tags tags={tagObjs} />
         </footer>
       </div>
     )

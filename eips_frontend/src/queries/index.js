@@ -60,6 +60,7 @@ export const getTags = gql`
     query getTags ($eipId: ID) {
       tags (eipId: $eipId) {
         tagName
+        eipsCount
       }
     }
 `

@@ -52,6 +52,7 @@ class Stats(ObjectType):
 class Tag(ObjectType):
     tag_name = String()
     active = Boolean()
+    eips_count = Int()
 
 
 class Query(ObjectType):

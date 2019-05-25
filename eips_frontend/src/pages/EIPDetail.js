@@ -23,13 +23,14 @@ class EIPDetail extends React.Component {
               );
 
               const { eipId, title, fullText } = data.eip
+              const tags = data.eip.tags.map(tag => ({ tagName: tag }))
               return (
                 <section className="section">
                   <div className="container">
                     <div className="content">
                       <h2 className="is-title is-size-2">EIP-{eipId}: {title}</h2>
 
-                      <Tags tags={data.eip.tags} />
+                      <Tags tags={tags} />
 
                       <Markdown content={fullText} />
                     </div>

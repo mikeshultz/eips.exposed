@@ -137,7 +137,14 @@ def get_total_committers():
 
 def get_all_tags():
     with yield_session() as sess:
-        return sess.query(Tag).order_by(Tag.tag_name).all()
+        return sess.query(
+            Tag.tag_name,
+            Tag.active,
+            func.count(EIP.eip_id).label('eips_count'))\
+            .join(EIPTag, EIPTag.c.tag_name == Tag.tag_name)\
+            .join(EIP, EIP.eip_id == EIPTag.c.eip_id)\
+            .filter(Tag.active == True)\
+            .group_by(Tag).order_by(Tag.tag_name).all()
 
 
 def get_eip_tags(eip_id):

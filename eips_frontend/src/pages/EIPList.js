@@ -25,7 +25,7 @@ class EIPList extends React.Component {
         
             return (
               <div id="tag-container" className="container">
-                <Tags tags={data.tags.map(t => t.tagName)} />
+                <Tags tags={data.tags} />
               </div>
             )
           }}
