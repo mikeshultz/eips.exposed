@@ -14,11 +14,12 @@
 @import url('https://fonts.googleapis.com/css?family=Biryani&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Martel+Sans&display=swap');
 
+$primary-bg: #88A8CF;
 $light-bg: #F5F5F5;
 $med-bg: #BDBDBD;
 
 body {
-    background: #C4DCE8;
+    background: $primary-bg;
     font-family: "Martel Sans", sans-serif;
 }
 
