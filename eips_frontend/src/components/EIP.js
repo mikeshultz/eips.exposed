@@ -17,7 +17,7 @@ class EIP extends React.Component {
             </div>
           </header>
           <div className="card-content">
-            <div className="level">
+            <div className="level is-mobile">
               <div className="level-left">
                 <div className="level-item has-text-centered">
                   EIP-{eipId}

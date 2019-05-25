@@ -4,8 +4,19 @@ import PixelatedImage from './PixelatedImage';
 
 class Header extends React.Component {
   render () {
-    const logoWidth = 500; // orig: 723;
-    const logoHeight = 102; // orig: 147;
+    let logoWidth = 500; // orig: 723;
+    let logoHeight = 102; // orig: 147;
+
+    if (logoWidth > window.innerWidth) {
+      const diff = logoWidth - window.innerWidth;
+      const ratio = logoHeight / logoWidth;
+      console.log(`orig - width: ${logoWidth} / height ${logoHeight}`);
+      console.log(`diff: ${diff} -- ratio ${ratio}`);
+      logoWidth = logoWidth - diff;
+      logoHeight = logoWidth * ratio;
+      console.log(`after - width: ${logoWidth} / height ${logoHeight}`);
+    }
+
     return (
       <header className="App-header loading-overlay-parent">
         <div className={this.props.loading ? `loading-overlay` : `hide`}></div>
@@ -22,7 +33,7 @@ class Header extends React.Component {
               <p className="title">{this.props.stats ? this.props.stats.commits : ''}</p>
             </div>
           </div>
-          <div className="level-item has-text-centered">
+          <div className="level-item has-text-centered has-brand">
             <div className="brand">
               <Link to="/" className="">
                 <PixelatedImage src="/eips.exposed-logo.png" maxPixelSize={15}>

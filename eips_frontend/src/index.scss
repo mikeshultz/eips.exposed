@@ -29,6 +29,17 @@ h1,h2,h3,h4,h5 {
 
 header {
     nav {
+        @include mobile {
+            .level-item {
+                float: left;
+                width: 50%;
+                display: block;
+
+                &.has-brand {
+                    width: 100%;
+                }
+            }
+        }
         .brand {
             /*padding: 1rem 0;
             position: relative;
@@ -67,9 +78,15 @@ code {
 
 #tag-container {
     margin-top: 2rem;
+    @include mobile {
+        margin: 2rem;
+    }
     .tags {
         .tag {
             @extend .is-light;
+            @include mobile {
+                font-size: 12px !important;
+            }
         }
     }
 }
@@ -79,7 +96,9 @@ code {
     min-height: 150rem;
     margin-top: 2rem;
     .column {
-        width: 33%;
+        @include tablet {
+            width: 33%;
+        }
     }
     .eip {
         display: block;
