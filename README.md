@@ -4,14 +4,24 @@ Ethereum EIP explorer
 
 ## Project Structure
 
-### eips_exposed/processor
+### eips_exposed/processor/
 
 This processes the official EIPs GitHub repository and inserts them into a PostgreSQL database.
 
-### eips_exposed/server
+### eips_exposed/server/
 
-The Tornado server handling serving the frontend and GraphQL backend
+The Tornado server handling serving the GraphQL backend
 
-### eips_exposed/frontend
+### eips_frontend/
 
 The source for the frontend application.
+
+### ops/
+
+Contains ops/devops scripts and data, including:
+
+- Ansible scripts for deployment
+- Dockerfiles for service containers
+- Alembic migration files for DB management
+- Configuration used in the docker containers
+- Initial data, like tag defs and assignments
