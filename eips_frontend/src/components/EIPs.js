@@ -8,6 +8,8 @@ class EIPs extends React.Component {
     const colTwo = []
     const colThree = []
 
+    const noResultsEl = (<div className="notification is-info no-results">No EIPs found</div>);
+
     this.props.eips.forEach(eip => {
       eipCounter += 1;
       const eipEl = (
@@ -28,7 +30,7 @@ class EIPs extends React.Component {
         <div className={this.props.loading ? `loading-overlay` : `hide`}></div>
         <div className="columns">
           <div className="column">
-            {colOne}
+            {colOne.length > 0 ? colOne : noResultsEl}
           </div>
           <div className="column">
             {colTwo}

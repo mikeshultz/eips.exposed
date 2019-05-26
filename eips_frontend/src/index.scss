@@ -4,6 +4,7 @@
 @import '~bulma/sass/elements/container.sass';
 @import '~bulma/sass/elements/title.sass';
 @import '~bulma/sass/elements/tag.sass';
+@import '~bulma/sass/elements/notification.sass';
 @import '~bulma/sass/elements/other.sass';
 @import '~bulma/sass/components/level.sass';
 @import '~bulma/sass/components/card.sass';
@@ -78,6 +79,7 @@ code {
 
 #tag-container {
     margin-top: 2rem;
+    margin-bottom: 2rem;
     @include mobile {
         margin: 2rem;
     }
@@ -161,4 +163,18 @@ a.tag {
         background: #EFEFEF;
         opacity: 0.75;
     }
+}
+
+.search-box {
+    margin-top: 2rem;
+    .search-input {
+        width: 100%;
+        height: 3rem;
+        font-size: 2rem;
+        padding: 0.25rem;
+    }
+}
+
+.no-results {
+    margin-left: 2rem;
 }

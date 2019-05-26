@@ -3,8 +3,10 @@ from sqlalchemy import (
     create_engine,
     func,
     distinct,
+    text,
     Table,
     ForeignKey,
+    Index,
     Column,
     Integer,
     String,
@@ -16,6 +18,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy_utils.types.ts_vector import TSVectorType
 from eips_exposed.common import CONFIG
 from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory
 
@@ -64,11 +67,17 @@ class EIP(Base):
 
     full_text = Column(Text)
 
+    search_vector = Column(TSVectorType)
+
     commits = relationship('Commit', secondary=EIPCommit)
     tags = relationship('Tag', secondary=EIPTag)
 
     def __repr__(self):
         return '<EIP (eip_id={})>'.format(self.eip_id)
+
+    @classmethod
+    def search(cls, session, terms):
+        return session.query(cls).filter(cls.search_vector.match(terms))
 
 
 class Commit(Base):
@@ -79,10 +88,16 @@ class Commit(Base):
     committed_date = Column(DateTime(), nullable=False)
     message = Column(Text())
 
+    search_vector = Column(TSVectorType)
+
     eips = relationship('EIP', secondary=EIPCommit)
 
     def __repr__(self):
         return '<Commit (commit_hash={})>'.format(self.commit_hash)
+
+    @classmethod
+    def search(cls, session, terms):
+        return session.query(cls).filter(cls.search_vector.match(terms))
 
 
 class Tag(Base):

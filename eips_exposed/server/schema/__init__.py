@@ -58,21 +58,30 @@ class Tag(ObjectType):
 class Query(ObjectType):
     stats = Field(Stats)
     eip = Field(EIP, eip_id=ID(required=True))
-    eips = List(EIP, limit=Int(default_value=100), offset=Int(default_value=0), tag=String())
+    eips = List(
+        EIP,
+        limit=Int(default_value=100),
+        offset=Int(default_value=0),
+        tag=String(),
+        search=String(),
+    )
     tags = List(Tag, eip_id=ID())
 
     def resolve_eip(_, info, eip_id):
         sess = get_session()
         return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).one_or_none()
 
-    def resolve_eips(_, info, limit, offset, tag=None):
+    def resolve_eips(_, info, limit, offset, tag=None, search=None):
         sess = get_session()
         if tag:
             return sess.query(DBEIP).filter(
                 DBEIP.tags.any(tag_name=tag)
             ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
         else:
-            return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+            if search:
+                return DBEIP.search(sess, search).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+            else:
+                return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
 
     def resolve_stats(_, info):
         return AttrDict({

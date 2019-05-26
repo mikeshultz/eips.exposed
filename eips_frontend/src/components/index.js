@@ -7,6 +7,7 @@ import EIPStatus from './EIPStatus';
 import Footer from './Footer';
 import Markdown from './Markdown';
 import EIPHeader from './EIPHeader';
+import SearchBox from './SearchBox';
 
 export {
   Header,
@@ -17,5 +18,6 @@ export {
   Footer,
   Markdown,
   Tag,
-  EIPHeader
+  EIPHeader,
+  SearchBox,
 }
