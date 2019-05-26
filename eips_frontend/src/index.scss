@@ -135,6 +135,13 @@ code {
             color: $white;
         }
     }
+    .eip-header {
+        tr {
+            &.hide {
+                display: none;
+            }
+        }
+    }
 }
 
 a.tag {

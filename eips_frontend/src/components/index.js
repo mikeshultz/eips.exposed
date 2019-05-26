@@ -6,6 +6,7 @@ import EIPs from './EIPs';
 import EIPStatus from './EIPStatus';
 import Footer from './Footer';
 import Markdown from './Markdown';
+import EIPHeader from './EIPHeader';
 
 export {
   Header,
@@ -15,5 +16,6 @@ export {
   EIPStatus,
   Footer,
   Markdown,
-  Tag
+  Tag,
+  EIPHeader
 }

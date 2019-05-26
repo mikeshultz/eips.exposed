@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { getEIP } from '../queries';
-import { Markdown, Tags } from '../components';
+import { Markdown, Tags, EIPHeader } from '../components';
 
 class EIPDetail extends React.Component {
   render () {
@@ -29,6 +29,8 @@ class EIPDetail extends React.Component {
                   <div className="container">
                     <div className="content">
                       <h2 className="is-title is-size-2">EIP-{eipId}: {title}</h2>
+
+                      <EIPHeader eip={data.eip} />
 
                       <Tags tags={tags} />
 

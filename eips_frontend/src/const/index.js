@@ -6,7 +6,7 @@ export const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL ?
   process.env.REACT_APP_GRAPHQL_URL :
   'https://graphql.eips.exposed/graphql';
 
-// Mapping to resolve Enums from graphql
+// Mappings to resolve Enums from graphql
 export const EIPS_STATUSES = {
   DRAFT: {
     extraClass: 'has-text-info',
@@ -40,4 +40,31 @@ export const EIPS_STATUSES = {
     extraClass: 'has-text-danger',
     text: 'Rejected'
   },
-}
+};
+
+export const EIPS_TYPES = {
+  META: {
+    text: 'Meta'
+  },
+  INFORMATIONAL: {
+    text: 'Informational'
+  },
+  STANDARDS: {
+    text: 'Standards'
+  },
+};
+
+export const EIPS_CATEGORIES = {
+  ERC: {
+    text: 'ERC'
+  },
+  NETWORKING: {
+    text: 'Networking'
+  },
+  INTERFACE: {
+    text: 'Interface'
+  },
+  CORE: {
+    text: 'Core'
+  },
+};
