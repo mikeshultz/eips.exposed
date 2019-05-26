@@ -86,6 +86,8 @@ def process() -> None:
             message=commit.message
         )
 
+        log.debug('Adding commit {}'.format(commit.hexsha))
+
         db_commit = db_session.merge(commit_inst)
         db_commits[db_commit.commit_hash] = db_commit
 
