@@ -11,17 +11,19 @@ class EIPs extends React.Component {
     const noResultsEl = (<div className="notification is-info no-results">No EIPs found</div>);
 
     this.props.eips.forEach(eip => {
-      eipCounter += 1;
       const eipEl = (
         <EIP key={eip.eipId} eip={eip} />
       );
 
-      if (eipCounter % 3 === 0) {
-        colThree.push(eipEl)
-      } else if (eipCounter % 2 === 0) {
-        colTwo.push(eipEl)
+      if (eipCounter === 2) {
+        colThree.push(eipEl);
+        eipCounter = 0;
+      } else if (eipCounter === 1) {
+        colTwo.push(eipEl);
+        eipCounter += 1;
       } else {
-        colOne.push(eipEl)
+        colOne.push(eipEl);
+        eipCounter += 1;
       }
     });
 
