@@ -6,6 +6,9 @@ export const GRAPHQL_URL = process.env.REACT_APP_GRAPHQL_URL ?
   process.env.REACT_APP_GRAPHQL_URL :
   'https://graphql.eips.exposed/graphql';
 
+export const ADDR_TRUNC_LENGTH = 20;
+export const ADDRESS_PATTERN = /0x([A-Fa-f0-9]{40})/g
+
 // Mappings to resolve Enums from graphql
 export const EIPS_STATUSES = {
   DRAFT: {

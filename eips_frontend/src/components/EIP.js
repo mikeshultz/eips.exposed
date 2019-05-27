@@ -1,13 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { ADDRESS_PATTERN } from '../const';
+import { truncateAddressInString } from '../utils';
+
 import Tags from './Tags';
 import EIPStatus from './EIPStatus';
 
 class EIP extends React.Component {
   render () {
-    const { eipId, eipType, status, category, title, tags } = this.props.eip
+    const { eipId, eipType, status, category, tags } = this.props.eip;
+    let { title } = this.props.eip;
+
+    if (title.search(ADDRESS_PATTERN) > -1) {
+      title = truncateAddressInString(title);
+    }
+
     const tagObjs = tags.map(tag => ({ tagName: tag }))
+
     return (
       <div className="eip card">
         <Link to={`/eip/${eipId}`}>
