@@ -52,8 +52,8 @@ class Header extends React.Component {
           </div>
           <div className="level-item has-text-centered">
             <div>
-              <p className="heading">Issues</p>
-              <p className="title">{this.props.stats ? this.props.stats.issues : ''}</p>
+              <p className="heading">Parse Errors</p>
+              <p className="title">{this.props.stats ? this.props.stats.errors : ''}</p>
             </div>
           </div>
         </nav>

@@ -51,7 +51,7 @@ export const getStats = gql`
         eips
         commits
         contributors
-        issues
+        errors
       }
     }
 `

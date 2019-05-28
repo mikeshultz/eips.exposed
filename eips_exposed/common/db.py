@@ -168,6 +168,11 @@ def get_total_committers():
         return sess.query(func.count(distinct(Commit.committer))).first()[0]
 
 
+def get_total_errors():
+    with yield_session() as sess:
+        return sess.query(func.count(Error.eip_id)).first()[0]
+
+
 def get_all_tags():
     with yield_session() as sess:
         return sess.query(

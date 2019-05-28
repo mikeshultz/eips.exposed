@@ -10,17 +10,20 @@ from graphene import (
     Enum,
     Date,
     Boolean,
+    DateTime,
 )
 from eips_exposed.common.db import (
     get_session,
     EIP as DBEIP,
+    Error as DBError,
     get_total_eips,
     get_total_commits,
     get_total_committers,
+    get_total_errors,
     get_eip_tags,
     get_all_tags,
 )
-from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory
+from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory, ErrorType
 
 
 class EIP(ObjectType):
@@ -46,13 +49,20 @@ class Stats(ObjectType):
     eips = Int()
     commits = Int()
     contributors = Int()
-    issues = Int()
+    errors = Int()
 
 
 class Tag(ObjectType):
     tag_name = String()
     active = Boolean()
     eips_count = Int()
+
+
+class Error(ObjectType):
+    eip_id = ID()
+    error_type = Field(type=Enum.from_enum(ErrorType))
+    when = DateTime()
+    message = String()
 
 
 class Query(ObjectType):
@@ -65,6 +75,7 @@ class Query(ObjectType):
         tag=String(),
         search=String(),
     )
+    errors = List(Error)
     tags = List(Tag, eip_id=ID())
 
     def resolve_eip(_, info, eip_id):
@@ -83,12 +94,16 @@ class Query(ObjectType):
             else:
                 return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
 
+    def resolve_errors(_, info):
+        sess = get_session()
+        return sess.query(DBError).all()
+
     def resolve_stats(_, info):
         return AttrDict({
             'eips': get_total_eips(),
             'commits': get_total_commits(),
             'contributors': get_total_committers(),
-            'issues': -1,
+            'errors': get_total_errors(),
         })
 
     def resolve_tags(_, info, eip_id=None):
