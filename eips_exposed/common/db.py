@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from datetime import datetime
 from sqlalchemy import (
     create_engine,
     func,
@@ -19,8 +20,10 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy_utils.types.ts_vector import TSVectorType
-from eips_exposed.common import CONFIG
-from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory
+from eips_exposed.common import CONFIG, getLogger
+from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory, ErrorType
+
+log = getLogger(__name__)
 
 Base = declarative_base()
 engine = create_engine(CONFIG['EIPS_DB_URL'], echo=True)
@@ -115,6 +118,21 @@ class Tag(Base):
         return self.tag_name
 
 
+class Error(Base):
+    __tablename__ = 'error'
+
+    eip_id = Column('eip_id', Integer, ForeignKey('eip.eip_id'), primary_key=True)
+    error_type = Column(Enum(ErrorType), nullable=False)
+    when = Column(DateTime, server_default=func.current_timestamp())
+    message = Column(String)
+
+    def __repr__(self):
+        return '<Error (error_id={})>'.format(self.error_id)
+
+    def __str__(self):
+        return self.message
+
+
 def get_session():
     """ Return an SQLAlchemy session """
     return Session()
@@ -165,3 +183,14 @@ def get_all_tags():
 def get_eip_tags(eip_id):
     with yield_session() as sess:
         return sess.query(Tag).filter(Tag.eips.any(eip_id=eip_id)).order_by(Tag.tag_name).all()
+
+
+def set_error(session, eip_id, error_type, message):
+    log.debug('set_error({}, {}, {})'.format(eip_id, error_type, message))
+    err = Error(
+        eip_id=eip_id,
+        error_type=error_type,
+        message=message,
+        when=datetime.now(),
+    )
+    return session.merge(err)

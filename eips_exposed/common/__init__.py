@@ -1,9 +1,12 @@
+import re
 from typing import Any, Type
 from datetime import datetime
 
 from eips_exposed.common.config import CONFIG
 from eips_exposed.common.exceptions import ConfigurationError, EIPParseError
 from eips_exposed.common.logging import getLogger
+
+EIP_FILENAME_PATTERN = r'^eip\-(\d+).md$'
 
 
 def type_or_none(t: Type, v: Any) -> Any:
@@ -48,3 +51,12 @@ def datetime_or_none(v):
     except ValueError:
         return None
     return v
+
+
+def eip_id_from_file(fname):
+    """ Get an EIP ID from a filename """
+    match = re.fullmatch(EIP_FILENAME_PATTERN, fname)
+    try:
+        return int(match.group(1))
+    except IndexError:
+        return -1

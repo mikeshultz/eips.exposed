@@ -1,19 +1,20 @@
 import sys
 import time
-from typing import List
+from typing import List, Set
 from pathlib import Path
 
-from eips_exposed.common import CONFIG, getLogger
+from eips_exposed.common import CONFIG, getLogger, eip_id_from_file
 from eips_exposed.common.db import (
     get_session,
     get_latest_commit,
+    set_error,
     EIP as DBEIP,
     Commit as DBCommit,
 )
 from eips_exposed.common.exceptions import EIPParseError
 from eips_exposed.processor import parse_eip
 from eips_exposed.processor.git import latest_commit_hash, get_eip_repo, all_commits, file_history
-from eips_exposed.processor.objects import EIP
+from eips_exposed.processor.objects import EIP, ErrorType
 
 log = getLogger(__name__)
 
@@ -30,7 +31,7 @@ def list_eip_files() -> List[Path]:
     return [f for f in CONFIG['EIPS_DIR'].iterdir() if f.is_file()]
 
 
-def get_public_attrs(obj) -> List[str]:
+def get_public_attrs(obj) -> Set[str]:
     public_attrs = set()
 
     for attr in dir(obj):
@@ -92,6 +93,7 @@ def process() -> None:
         db_commits[db_commit.commit_hash] = db_commit
 
     eip_files = list_eip_files()
+    parse_errors: List[Tuple] = list()
 
     for fil in eip_files:
 
@@ -106,8 +108,11 @@ def process() -> None:
         try:
             eip = parse_eip(fil.read_text())
         except EIPParseError:
-            log.exception('Parsing of EIP file failed ({})'.format(fil))
+            msg = 'Parsing of EIP file failed ({})'.format(fil.name)
+            log.exception(msg)
             eip_error_count += 1
+            eip_id = eip_id_from_file(fil.name)
+            parse_errors.append((eip_id, msg))
         else:
             log.info('Successfully parsed EIP {}'.format(eip))
             eip_count += 1
@@ -123,6 +128,8 @@ def process() -> None:
             db_session.merge(eip_db_obj)
 
     log.debug('Comitting changes to database...')
+    for err in parse_errors:
+        set_error(db_session, err[0], ErrorType.EIP_PARSE_ERROR, err[1])
     db_session.commit()
 
     log.debug('Total EIP Files: {}'.format(len(eip_files)))

@@ -66,6 +66,10 @@ class EIPCategory(Enum):
         return None
 
 
+class ErrorType(Enum):
+    EIP_PARSE_ERROR = 1
+
+
 class EIPCommit:
     """ Represents a commit on an EIP file """
 
