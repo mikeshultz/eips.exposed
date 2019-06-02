@@ -5,10 +5,13 @@ services:
   postgres:
     restart: always
     image: postgres:10.0
-    env_file:
-      - /usr/src/eips.exposed/.env
+    environment:
+      - EIPS_DB_URL=${EIPS_DB_URL}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     expose:
-      - "5432:5432"
+      - "5432/tcp"
 
   processor:
     build:
@@ -16,9 +19,8 @@ services:
       dockerfile: ./ops/dockerfiles/eips_processor
     depends_on:
       - postgres
-    env_file:
-      - /usr/src/eips.exposed/.env
     environment:
+      - EIPS_DB_URL=${EIPS_DB_URL}
       - EIPS_SERVER_PORT=8080
       - EIPS_LOCAL_REPO=/tmp/eips
 
@@ -28,13 +30,12 @@ services:
       dockerfile: ./ops/dockerfiles/eips_api
     depends_on:
       - postgres
-    env_file:
-      - /usr/src/eips.exposed/.env
     environment:
+      - EIPS_DB_URL=${EIPS_DB_URL}
       - EIPS_SERVER_PORT=8080
       - EIPS_LOCAL_REPO=/tmp/eips
     expose:
-      - "8080:8080"
+      - "8080/tcp"
 
   frontend:
     build:
@@ -45,7 +46,7 @@ services:
     depends_on:
       - graphql
     expose:
-      - "5000:5000"
+      - "5000/tcp"
 
   nginx:
     image: nginx:mainline
