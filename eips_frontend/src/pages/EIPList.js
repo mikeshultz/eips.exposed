@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 
-import { Tags, EIPs, SearchBox } from '../components';
+import { Tags, EIPs, SearchBox, EIPCategoryNav } from '../components';
 import { getEIPs, getTags } from '../queries';
 
 class EIPList extends React.Component {
@@ -25,12 +25,14 @@ class EIPList extends React.Component {
   }
 
   render () {
-    const { tagName } = this.props.match.params
-    const variables = { tag: tagName, search: this.state.searchTerm };
+    const { tagName, category } = this.props.match.params
+    const variables = { tag: tagName, category, search: this.state.searchTerm };
     return (
       <>
 
         <SearchBox onUpdate={this.search} searchTerm={this.state.searchTerm} />
+
+        <EIPCategoryNav />
 
         <Query query={getTags}>
           {({ loading, error, data }) => {

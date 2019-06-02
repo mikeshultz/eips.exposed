@@ -9,6 +9,8 @@ import Markdown from './Markdown';
 import EIPHeader from './EIPHeader';
 import SearchBox from './SearchBox';
 import CommitsTable from './CommitsTable';
+import EIPCategoryNav from './EIPCategoryNav';
+import EIPCategoryButton from './EIPCategoryButton';
 
 export {
   Header,
@@ -22,4 +24,6 @@ export {
   EIPHeader,
   SearchBox,
   CommitsTable,
+  EIPCategoryNav,
+  EIPCategoryButton,
 }

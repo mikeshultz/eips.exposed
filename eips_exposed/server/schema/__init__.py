@@ -23,8 +23,12 @@ from eips_exposed.common.db import (
     get_total_errors,
     get_eip_tags,
     get_all_tags,
+    get_categories_with_totals,
 )
 from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory, ErrorType
+
+
+EIPCategoryField = Field(type=Enum.from_enum(EIPCategory))
 
 
 class EIP(ObjectType):
@@ -37,7 +41,7 @@ class EIP(ObjectType):
     updated = String()
     discussions_to = String()
     review_period_end = String()
-    category = Field(type=Enum.from_enum(EIPCategory))
+    category = EIPCategoryField
     requires = List(Int)
     replaces = List(Int)
     superseded_by = List(Int)
@@ -74,6 +78,11 @@ class Commit(ObjectType):
     message = String()
 
 
+class Category(ObjectType):
+    category = EIPCategoryField
+    eip_count = Int()
+
+
 class Query(ObjectType):
     stats = Field(Stats)
     eip = Field(EIP, eip_id=ID(required=True))
@@ -82,6 +91,7 @@ class Query(ObjectType):
         limit=Int(default_value=100),
         offset=Int(default_value=0),
         tag=String(),
+        category=String(),
         search=String(),
     )
     commits = List(
@@ -93,16 +103,21 @@ class Query(ObjectType):
     )
     errors = List(Error)
     tags = List(Tag, eip_id=ID())
+    categories = List(Category)
 
     def resolve_eip(_, info, eip_id):
         with yield_session() as sess:
             return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).one_or_none()
 
-    def resolve_eips(_, info, limit, offset, tag=None, search=None):
+    def resolve_eips(_, info, limit, offset, tag=None, category=None, search=None):
         with yield_session() as sess:
             if tag:
                 return sess.query(DBEIP).filter(
                     DBEIP.tags.any(tag_name=tag)
+                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+            elif category:
+                return sess.query(DBEIP).filter(
+                    DBEIP.category == category.upper()
                 ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
             else:
                 if search:
@@ -147,6 +162,9 @@ class Query(ObjectType):
             return get_eip_tags(eip_id)
         else:
             return get_all_tags()
+
+    def resolve_categories(_, info):
+        return get_categories_with_totals()
 
 
 schema = Schema(query=Query)

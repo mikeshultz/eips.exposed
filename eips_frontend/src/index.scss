@@ -1,5 +1,6 @@
 @import '~bulma/sass/utilities/_all.sass';
 @import '~bulma/sass/base/_all.sass';
+@import '~bulma/sass/elements/button.sass';
 @import '~bulma/sass/elements/content.sass';
 @import '~bulma/sass/elements/container.sass';
 @import '~bulma/sass/elements/title.sass';
@@ -192,4 +193,25 @@ a.tag {
 
 .no-results {
     margin-left: 2rem;
+}
+
+.category-nav {
+    padding: 1.5rem;
+    margin: 0 auto;
+    text-align: center;
+
+    .category-button {
+        margin: 0 0.5rem;
+
+        .count {
+            margin-left: 0.5rem;
+            padding: 0.25rem;
+            line-height: 1.25rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            height: 1.5rem;
+            background: $primary-bg;
+            color: $light-bg;
+        }
+    }
 }

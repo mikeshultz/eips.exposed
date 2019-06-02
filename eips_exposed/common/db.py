@@ -191,6 +191,14 @@ def get_eip_tags(eip_id):
         return sess.query(Tag).filter(Tag.eips.any(eip_id=eip_id)).order_by(Tag.tag_name).all()
 
 
+def get_categories_with_totals():
+    with yield_session() as sess:
+        return sess.query(
+            EIP.category,
+            func.count(EIP.category).label('eip_count')
+        ).group_by(EIP.category).order_by(EIP.category).all()
+
+
 def set_error(session, eip_id, error_type, message):
     log.debug('set_error({}, {}, {})'.format(eip_id, error_type, message))
     err = Error(
