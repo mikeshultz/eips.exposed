@@ -10,7 +10,7 @@ class Footer extends React.Component {
           </p>
           <p className="is-size-7">
             It is intended to help developers of the Ethereum ecosystem navigate EIPs in a more
-            coerent way. <a href="https://github.com/mikeshultz/eips.exposed">Pull requests, feature
+            coherent way. <a href="https://github.com/mikeshultz/eips.exposed">Pull requests, feature
             requests, and bug reports are very welcome</a>
           </p>
           <p className="is-size-7">
