@@ -59,8 +59,27 @@
     mode: '0755'
   tags: letsencrypt
 
-- debug:
-    msg: "!!!!!!!!!!!!!!!!!!!!"
+- name: create certbot webroot if necessary
+  file:
+    path: "{{ eips_exposed_srcdir }}"
+    state: directory
+    mode: '0755'
+
+- name: check for .env file
+  stat:
+    path: "{{ eips_exposed_srcdir }}/.env"
+  register: env_file
+
+- name: fail if .env file is missing
+  fail:
+    msg: "The .env file must be created to properly configure services"
+  when: not env_file.stat.exists
+
+- name: fail if .env file has wrong permissions
+  fail:
+    msg: "The .env file must be created with the proper permissions"
+  when: env_file.stat.mode != 0o600
+  when: "{{ '%o' % env_file.stat.mode }} != 600"
 
 - name: clone eips.exposed repository
   git:

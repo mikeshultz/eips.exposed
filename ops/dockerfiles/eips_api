@@ -1,5 +1,7 @@
 FROM python:3.6
 
+EXPOSE 8080
+
 ENV WORKDIR /usr/src/eips_exposed
 
 WORKDIR $WORKDIR

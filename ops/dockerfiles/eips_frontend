@@ -1,5 +1,7 @@
 FROM node:10
 
+EXPOSE 5000
+
 ENV WORKDIR /usr/src/eips_frontend
 
 WORKDIR $WORKDIR
