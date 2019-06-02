@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Stand up nginx SSL by first creating self-signed certs just so we can bring
 # up nginx, then removing them, then running certbot.  It's a little fucky. It
 # must be run in the source directory with docker-compose.yml
@@ -9,7 +9,9 @@ KEY_SIZE={{ letsencrypt_keysize }}
 EMAIL="{{ letsencrypt_email }}"
 NGINX_CONTAINER_NAME="{{ nginx_container_name }}"
 
-dom_path="/etc/letsencrypt/live/$DOMAIN"
+echo "Creating a certificate for domains ${DOMAINS[@]}"
+
+dom_path="/etc/letsencrypt/live/${DOMAINS[0]}"
 
 echo "Creating directory $dom_path"
 mkdir -p $dom_path
@@ -25,6 +27,7 @@ else
         -subj "/CN=${DOMAINS[0]}"
 fi
 
+echo "Bringing up nginx..."
 docker-compose up -d --force-recreate $NGINX_CONTAINER_NAME
 
 # Make sure nginx came up
@@ -34,6 +37,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Remove the self-signed certs now that nginx is up
+echo "Removiing self-signed certs..."
 rm -rf $dom_path
 
 #Join $domains to -d args

@@ -1,5 +1,6 @@
 ---
 eips_exposed_srcdir: /usr/src/eips.exposed
+eips_exposed_env: /etc/eips.exposed.env
 letsencrypt_keysize: 4096
 # This is also in scripts and docker-compose.yml
 letsencrypt_webroot: /var/www/certbot

@@ -67,25 +67,26 @@
 
 - name: check for .env file
   stat:
-    path: "{{ eips_exposed_srcdir }}/.env"
+    path: "{{ eips_exposed_env }}"
   register: env_file
-
-- name: fail if .env file is missing
-  fail:
-    msg: "The .env file must be created to properly configure services"
-  when: not env_file.stat.exists
 
 - name: fail if .env file has wrong permissions
   fail:
     msg: "The .env file must be created with the proper permissions"
-  when: env_file.stat.mode != 0o600
-  when: "{{ '%o' % env_file.stat.mode }} != 600"
+  when: env_file.stat.exists and env_file.stat.mode != "0600" # 0o600
 
 - name: clone eips.exposed repository
   git:
     repo: 'https://github.com/mikeshultz/eips.exposed.git'
     dest: "{{ eips_exposed_srcdir }}"
     update: yes
+
+- name: symlink .env to the source directory
+  file:
+    src: "{{ eips_exposed_env }}"
+    path: "{{ eips_exposed_srcdir }}/.env"
+    state: link
+  when: env_file.stat.exists
 
 # Can't get new enough python modules...
 # - name: build images and bring up docker containers
@@ -94,8 +95,13 @@
 #     project_src: "{{ eips_exposed_srcdir }}"
 #     state: present
 #     timeout: 30
-- name: build images
-  shell: docker-compose build --build-arg GRAPHQL_SERVER=https://graphql.eips.exposed/graphql
+- name: build graphql and processor service images
+  shell: docker-compose build graphql processor
+  args:
+    chdir: "{{ eips_exposed_srcdir }}"
+
+- name: build frontend image
+  shell: docker-compose build --build-arg GRAPHQL_URL=https://graphql.eips.exposed/graphql frontend
   args:
     chdir: "{{ eips_exposed_srcdir }}"
 
@@ -106,7 +112,7 @@
 
 - name: ensure localhost is trusted
   firewalld:
-    state: present
+    state: enabled
     zone: trusted
     interface: lo
     permanent: true
