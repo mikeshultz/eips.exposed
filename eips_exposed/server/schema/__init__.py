@@ -13,7 +13,7 @@ from graphene import (
     DateTime,
 )
 from eips_exposed.common.db import (
-    get_session,
+    yield_session,
     EIP as DBEIP,
     Error as DBError,
     Commit as DBCommit,
@@ -95,44 +95,44 @@ class Query(ObjectType):
     tags = List(Tag, eip_id=ID())
 
     def resolve_eip(_, info, eip_id):
-        sess = get_session()
-        return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).one_or_none()
+        with yield_session() as sess:
+            return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).one_or_none()
 
     def resolve_eips(_, info, limit, offset, tag=None, search=None):
-        sess = get_session()
-        if tag:
-            return sess.query(DBEIP).filter(
-                DBEIP.tags.any(tag_name=tag)
-            ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
-        else:
-            if search:
-                return DBEIP.search(sess, search).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+        with yield_session() as sess:
+            if tag:
+                return sess.query(DBEIP).filter(
+                    DBEIP.tags.any(tag_name=tag)
+                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
             else:
-                return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                if search:
+                    return DBEIP.search(sess, search).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                else:
+                    return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
 
     def resolve_commits(_, info, limit, offset, eip_id=None, search=None):
-        sess = get_session()
-        if eip_id:
-            # TODO: add search with eip_id
-            return sess.query(
-                DBCommit
-            ).filter(
-                DBCommit.eips.any(eip_id=eip_id)
-            ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
-        else:
-            if search:
-                return DBCommit.search(
-                    sess,
-                    search
-                ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
-            else:
+        with yield_session() as sess:
+            if eip_id:
+                # TODO: add search with eip_id
                 return sess.query(
                     DBCommit
+                ).filter(
+                    DBCommit.eips.any(eip_id=eip_id)
                 ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
+            else:
+                if search:
+                    return DBCommit.search(
+                        sess,
+                        search
+                    ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
+                else:
+                    return sess.query(
+                        DBCommit
+                    ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
 
     def resolve_errors(_, info):
-        sess = get_session()
-        return sess.query(DBError).all()
+        with yield_session() as sess:
+            return sess.query(DBError).all()
 
     def resolve_stats(_, info):
         return AttrDict({
