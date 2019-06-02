@@ -80,7 +80,7 @@ class EIP(Base):
 
     @classmethod
     def search(cls, session, terms):
-        return session.query(cls).filter(cls.search_vector.match(terms))
+        return session.query(cls).filter(cls.search_vector.op('@@')(func.plainto_tsquery(terms)))
 
 
 class Commit(Base):
@@ -101,7 +101,7 @@ class Commit(Base):
 
     @classmethod
     def search(cls, session, terms):
-        return session.query(cls).filter(cls.search_vector.match(terms))
+        return session.query(cls).filter(cls.search_vector.op('@@')(func.plainto_tsquery(terms)))
 
 
 class Tag(Base):
