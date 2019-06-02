@@ -88,6 +88,7 @@ class Commit(Base):
 
     commit_hash = Column(String(40), primary_key=True)
     committer = Column(String(), nullable=False)
+    author = Column(String(), nullable=False)
     committed_date = Column(DateTime(), nullable=False)
     message = Column(Text())
 

@@ -16,6 +16,7 @@ from eips_exposed.common.db import (
     get_session,
     EIP as DBEIP,
     Error as DBError,
+    Commit as DBCommit,
     get_total_eips,
     get_total_commits,
     get_total_committers,
@@ -65,6 +66,14 @@ class Error(ObjectType):
     message = String()
 
 
+class Commit(ObjectType):
+    commit_hash = ID()
+    author = String()
+    committer = String()
+    committed_date = DateTime()
+    message = String()
+
+
 class Query(ObjectType):
     stats = Field(Stats)
     eip = Field(EIP, eip_id=ID(required=True))
@@ -73,6 +82,13 @@ class Query(ObjectType):
         limit=Int(default_value=100),
         offset=Int(default_value=0),
         tag=String(),
+        search=String(),
+    )
+    commits = List(
+        Commit,
+        limit=Int(default_value=100),
+        offset=Int(default_value=0),
+        eip_id=Int(),
         search=String(),
     )
     errors = List(Error)
@@ -93,6 +109,26 @@ class Query(ObjectType):
                 return DBEIP.search(sess, search).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
             else:
                 return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+
+    def resolve_commits(_, info, limit, offset, eip_id=None, search=None):
+        sess = get_session()
+        if eip_id:
+            # TODO: add search with eip_id
+            return sess.query(
+                DBCommit
+            ).filter(
+                DBCommit.eips.any(eip_id=eip_id)
+            ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
+        else:
+            if search:
+                return DBCommit.search(
+                    sess,
+                    search
+                ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
+            else:
+                return sess.query(
+                    DBCommit
+                ).order_by(DBCommit.committed_date.desc()).limit(limit).offset(offset).all()
 
     def resolve_errors(_, info):
         sess = get_session()

@@ -64,3 +64,26 @@ export const getTags = gql`
       }
     }
 `
+
+export const getErrors = gql`
+    query getErrors {
+      errors {
+        eipId
+        errorType
+        when
+        message
+      }
+    }
+`
+
+export const getCommits = gql`
+    query getCommits ($limit: Int, $offset: Int, $eipId: Int, $search: String) {
+      commits (limit: $limit, offset: $offset, eipId: $eipId, search: $search) {
+        commitHash
+        author
+        committer
+        committedDate
+        message
+      }
+    }
+`

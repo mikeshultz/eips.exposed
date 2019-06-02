@@ -83,6 +83,7 @@ def process() -> None:
         commit_inst = DBCommit(
             commit_hash=commit.hexsha,
             committer=commit.committer.name,
+            author=commit.author.name,
             committed_date=commit.committed_datetime,
             message=commit.message
         )
