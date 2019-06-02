@@ -23,33 +23,35 @@ class EIPHeader extends React.Component {
 
     return (
       <table className="eip-header table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-        <tr className={eipType ? '': 'hide'}>
-            <td>Type</td><td>{typeText}</td>
-        </tr>
-        <tr className={status ? '': 'hide'}>
-            <td>Status</td><td className={statusClass}>{statusText}</td>
-        </tr>
-        <tr className={author ? '': 'hide'}>
-            <td>Author</td><td>{author}</td>
-        </tr>
-        <tr className={updated ? '': 'hide'}>
-            <td>Updated</td><td>{updated}</td>
-        </tr>
-        <tr className={discussionsTo ? '': 'hide'}>
-            <td>Discussion</td><td><a href={discussionsTo}>{discussionsTo}</a></td>
-        </tr>
-        <tr className={reviewPeriodEnd ? '': 'hide'}>
-            <td>Review Period Ends</td><td>{reviewPeriodEnd}</td>
-        </tr>
-        <tr className={resolution ? '': 'hide'}>
-            <td>Resolution</td><td>{resolution}</td>
-        </tr>
-        <tr className={category ? '': 'hide'}>
-            <td>Category</td><td>{categoryText}</td>
-        </tr>
-        <tr>
-            <td>Original</td><td><a href={originalLink}>{originalLink}</a></td>
-        </tr>
+        <tbody>
+            <tr className={eipType ? '': 'hide'}>
+                <td>Type</td><td>{typeText}</td>
+            </tr>
+            <tr className={status ? '': 'hide'}>
+                <td>Status</td><td className={statusClass}>{statusText}</td>
+            </tr>
+            <tr className={author ? '': 'hide'}>
+                <td>Author</td><td>{author}</td>
+            </tr>
+            <tr className={updated ? '': 'hide'}>
+                <td>Updated</td><td>{updated}</td>
+            </tr>
+            <tr className={discussionsTo ? '': 'hide'}>
+                <td>Discussion</td><td><a href={discussionsTo}>{discussionsTo}</a></td>
+            </tr>
+            <tr className={reviewPeriodEnd ? '': 'hide'}>
+                <td>Review Period Ends</td><td>{reviewPeriodEnd}</td>
+            </tr>
+            <tr className={resolution ? '': 'hide'}>
+                <td>Resolution</td><td>{resolution}</td>
+            </tr>
+            <tr className={category ? '': 'hide'}>
+                <td>Category</td><td>{categoryText}</td>
+            </tr>
+            <tr>
+                <td>Original</td><td><a href={originalLink}>{originalLink}</a></td>
+            </tr>
+        </tbody>
       </table>
     )
   }

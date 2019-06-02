@@ -8,6 +8,7 @@ import Footer from './Footer';
 import Markdown from './Markdown';
 import EIPHeader from './EIPHeader';
 import SearchBox from './SearchBox';
+import CommitsTable from './CommitsTable';
 
 export {
   Header,
@@ -20,4 +21,5 @@ export {
   Tag,
   EIPHeader,
   SearchBox,
+  CommitsTable,
 }

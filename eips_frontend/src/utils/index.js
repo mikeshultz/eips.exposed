@@ -9,3 +9,8 @@ export function truncateAddress(addr) {
 export function truncateAddressInString(s) {
   return replace(s, ADDRESS_PATTERN, truncateAddress);
 }
+
+export function truncate(s, len) {
+  if (s.length < len) return s
+  return `${s.slice(0, len)}...`
+}
