@@ -17,3 +17,7 @@ The `.env` file, created in the `eips_exposed_srcdir` must be created to properl
     POSTGRES_USER="myuser"
     POSTGRES_PASSWORD="mypass"
     POSTGRES_DB="eips"
+
+## Deploy
+
+    ansible-playbook ops/ansible/main.yam
