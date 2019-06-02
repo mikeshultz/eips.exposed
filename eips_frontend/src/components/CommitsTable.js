@@ -25,7 +25,7 @@ class CommitsTable extends React.Component {
                 <tr key={commit.commitHash}>
                   <td>
                     <a href={`https://github.com/ethereum/EIPs/commit/${commit.commitHash}`}>
-                      {truncate(commit.commitHash, 7)}
+                      {truncate(commit.commitHash, 7, false)}
                     </a>
                   </td>
                   <td>{commit.author}</td>

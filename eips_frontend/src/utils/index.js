@@ -10,7 +10,9 @@ export function truncateAddressInString(s) {
   return replace(s, ADDRESS_PATTERN, truncateAddress);
 }
 
-export function truncate(s, len) {
+export function truncate(s, len, elipsis=true) {
   if (s.length < len) return s
-  return `${s.slice(0, len)}...`
+  let ret = `${s.slice(0, len)}`
+  if (elipsis) ret = `${ret}...`
+  return ret
 }
