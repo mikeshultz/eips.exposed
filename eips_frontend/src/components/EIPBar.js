@@ -44,6 +44,9 @@ class EIPBar extends React.Component {
         <Link to={`/eip/${eipId}`} onClick={this.toggleDetail}>
           <div className="level eip bar">
             <div className="level-left bar-title">
+              <div className="level-item bar-expand">
+                <span className="expand">{this.state.showDetails ? `-` : `+`}</span>
+              </div>
               <div className="level-item">
                 <p className="is-pulled-left is-size-4">EIP-{eipId} - {title}</p>
               </div>
@@ -57,9 +60,6 @@ class EIPBar extends React.Component {
               </div>
               <div className="level-item bar-category">
                 {category}
-              </div>
-              <div className="level-item bar-expand">
-                <span className="expand">{this.state.showDetails ? `-` : `+`}</span>
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ class EIPDetail extends React.Component {
   render () {
     const eipId = this.props.eipId || this.props.match.params.eipId
     return (
-      <div className="container">
+      <div id="eip-detail" className="container">
         <Query query={getEIP} variables={{ eipId }}>
           {({ loading, error, data }) => {
             if (loading) return (

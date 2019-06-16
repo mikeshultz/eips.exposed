@@ -20,6 +20,7 @@ $gray: #EFEFEF;
 $primary-bg: #bdbdbd; /*#88A8CF;*/
 $light-bg: #F5F5F5;
 $med-bg: #BDBDBD;
+$dark-bg: #6E6C6C;
 
 body {
     background: $primary-bg;
@@ -95,6 +96,28 @@ code {
     }
 }
 
+#eips,
+#eips-compact {
+    .eip {
+        .media-left {
+            padding-right: 1rem;
+        }
+        .tags {
+            padding: 0.5rem;
+            .tag {
+                background: $light-bg;
+                color: $white;
+            }
+        }
+        &.card {
+            background: $light-bg;
+            .card-content {
+                color: $grey;
+            }
+        }
+    }
+}
+
 #eips {
     padding: 0;
     min-height: 150rem;
@@ -108,22 +131,6 @@ code {
         display: block;
         margin: 1rem;
         min-height: 15rem;
-        .media-left {
-            padding-right: 1rem;
-        }
-        .tags {
-            padding: 0.5rem;
-            .tag {
-                background: $med-bg;
-                color: $white;
-            }
-        }
-        &.card {
-            background: $light-bg;
-            .card-content {
-                color: $grey;
-            }
-        }
     }
 }
 
@@ -150,18 +157,20 @@ code {
                             overflow: hidden;*/
                         }
                     }
+                    .bar-expand {
+                        margin-right: 0.5rem;
+                        display: block;
+                        .expand {
+                            font-size: 2rem;
+                            font-weight: bold;
+                        }
+                    }
                 }
                 .bar-meta {
                     @extend .is-hidden-mobile;
                     .bar-status {}
                     .bar-type {}
                     .bar-category {}
-                    .bar-expand {
-                        .expand {
-                            font-size: 2rem;
-                            font-weight: bold;
-                        }
-                    }
                 }
             }
             .bar-content {}
@@ -177,7 +186,7 @@ code {
     .tags {
         padding: 0.5rem;
         .tag {
-            background: $med-bg;
+            background: $dark-bg;
             color: $white;
         }
     }
