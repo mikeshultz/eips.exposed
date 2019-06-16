@@ -12,17 +12,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     expose:
       - "5432/tcp"
-
-  processor:
-    build:
-      context: .
-      dockerfile: ./ops/dockerfiles/eips_processor
-    depends_on:
-      - postgres
-    environment:
-      - EIPS_DB_URL=${EIPS_DB_URL}
-      - EIPS_SERVER_PORT=8080
-      - EIPS_LOCAL_REPO=/tmp/eips
+    ports:
+      - "5432:5432"
 
   graphql:
     build:
@@ -36,6 +27,20 @@ services:
       - EIPS_LOCAL_REPO=/tmp/eips
     expose:
       - "8080/tcp"
+    ports:
+      - "8080:8080"
+
+  processor:
+    build:
+      context: .
+      dockerfile: ./ops/dockerfiles/eips_processor
+    depends_on:
+      - postgres
+      - graphql  # migrations are run there
+    environment:
+      - EIPS_DB_URL=${EIPS_DB_URL}
+      - EIPS_SERVER_PORT=8080
+      - EIPS_LOCAL_REPO=/tmp/eips
 
   frontend:
     build:
