@@ -195,11 +195,13 @@ a.tag {
     margin-left: 2rem;
 }
 
-.category-nav {
+.category-nav,
+.status-nav {
     padding: 1.5rem;
     text-align: center;
 
-    .category-button {
+    .category-button,
+    .status-button {
         margin: 0.5rem;
 
         .count {

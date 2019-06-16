@@ -199,6 +199,14 @@ def get_categories_with_totals():
         ).group_by(EIP.category).order_by(EIP.category).all()
 
 
+def get_statuses_with_totals():
+    with yield_session() as sess:
+        return sess.query(
+            EIP.status,
+            func.count(EIP.status).label('eip_count')
+        ).group_by(EIP.status).order_by(EIP.status).all()
+
+
 def set_error(session, eip_id, error_type, message):
     log.debug('set_error({}, {}, {})'.format(eip_id, error_type, message))
     err = Error(

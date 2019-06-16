@@ -14,8 +14,8 @@ export const getAllEIPs = gql`
 `
 
 export const getEIPs = gql`
-    query getEIPs ($limit: Int, $offset: Int, $tag: String, $category: String, $search: String) {
-      eips (limit: $limit, offset: $offset, tag: $tag, category: $category, search: $search) {
+    query getEIPs ($limit: Int, $offset: Int, $tag: String, $category: String, $status: String, $search: String) {
+      eips (limit: $limit, offset: $offset, tag: $tag, category: $category, status: $status, search: $search) {
         eipId
         eipType
         title
@@ -92,6 +92,15 @@ export const getCategories = gql`
     query getCategories {
       categories {
         category
+        eipCount
+      }
+    }
+`
+
+export const getStatuses = gql`
+    query getStatuses {
+      statuses {
+        status
         eipCount
       }
     }

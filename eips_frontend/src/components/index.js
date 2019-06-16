@@ -11,6 +11,8 @@ import SearchBox from './SearchBox';
 import CommitsTable from './CommitsTable';
 import EIPCategoryNav from './EIPCategoryNav';
 import EIPCategoryButton from './EIPCategoryButton';
+import EIPStatusNav from './EIPStatusNav';
+import EIPStatusButton from './EIPStatusButton';
 
 export {
   Header,
@@ -26,4 +28,6 @@ export {
   CommitsTable,
   EIPCategoryNav,
   EIPCategoryButton,
+  EIPStatusNav,
+  EIPStatusButton,
 }

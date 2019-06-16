@@ -22,6 +22,7 @@ class App extends React.Component {
           <Route path="/eip/:eipId" component={EIPDetail} />
           <Route path="/tagged/:tagName" exact component={EIPList} />
           <Route path="/category/:category" exact component={EIPList} />
+          <Route path="/status/:status" exact component={EIPList} />
           <Route path="/" exact component={EIPList} />
 
           <Footer />

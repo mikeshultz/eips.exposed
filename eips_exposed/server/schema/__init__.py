@@ -24,11 +24,13 @@ from eips_exposed.common.db import (
     get_eip_tags,
     get_all_tags,
     get_categories_with_totals,
+    get_statuses_with_totals,
 )
 from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory, ErrorType
 
 
 EIPCategoryField = Field(type=Enum.from_enum(EIPCategory))
+EIPStatusField = Field(type=Enum.from_enum(EIPStatus))
 
 
 class EIP(ObjectType):
@@ -36,7 +38,7 @@ class EIP(ObjectType):
     eip_type = Field(type=Enum.from_enum(EIPType))
     title = String()
     author = String()
-    status = Field(type=Enum.from_enum(EIPStatus))
+    status = EIPStatusField
     created = Date()
     updated = String()
     discussions_to = String()
@@ -83,6 +85,11 @@ class Category(ObjectType):
     eip_count = Int()
 
 
+class Status(ObjectType):
+    status = EIPStatusField
+    eip_count = Int()
+
+
 class Query(ObjectType):
     stats = Field(Stats)
     eip = Field(EIP, eip_id=ID(required=True))
@@ -92,6 +99,7 @@ class Query(ObjectType):
         offset=Int(default_value=0),
         tag=String(),
         category=String(),
+        status=String(),
         search=String(),
     )
     commits = List(
@@ -104,12 +112,13 @@ class Query(ObjectType):
     errors = List(Error)
     tags = List(Tag, eip_id=ID())
     categories = List(Category)
+    statuses = List(Status)
 
     def resolve_eip(_, info, eip_id):
         with yield_session() as sess:
             return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).one_or_none()
 
-    def resolve_eips(_, info, limit, offset, tag=None, category=None, search=None):
+    def resolve_eips(_, info, limit, offset, tag=None, category=None, status=None, search=None):
         with yield_session() as sess:
             if tag:
                 return sess.query(DBEIP).filter(
@@ -118,6 +127,10 @@ class Query(ObjectType):
             elif category:
                 return sess.query(DBEIP).filter(
                     DBEIP.category == category.upper()
+                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+            elif status:
+                return sess.query(DBEIP).filter(
+                    DBEIP.status == status.upper()
                 ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
             else:
                 if search:
@@ -165,6 +178,9 @@ class Query(ObjectType):
 
     def resolve_categories(_, info):
         return get_categories_with_totals()
+
+    def resolve_statuses(_, info):
+        return get_statuses_with_totals()
 
 
 schema = Schema(query=Query)
