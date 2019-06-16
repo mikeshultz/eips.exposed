@@ -16,7 +16,7 @@ from sqlalchemy import (
     Text,
     Boolean,
 )
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, joinedload
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy_utils.types.ts_vector import TSVectorType
@@ -26,7 +26,7 @@ from eips_exposed.processor.objects import EIPType, EIPStatus, EIPCategory, Erro
 log = getLogger(__name__)
 
 Base = declarative_base()
-engine = create_engine(CONFIG['EIPS_DB_URL'], echo=True)
+engine = create_engine(CONFIG['EIPS_DB_URL'], echo=True, pool_size=10, max_overflow=50)
 Session = sessionmaker(bind=engine)
 
 
@@ -145,6 +145,7 @@ def yield_session(commit=False):
     yield sess
     if commit:
         sess.commit()
+    sess.close()
 
 
 # Helpful little functions

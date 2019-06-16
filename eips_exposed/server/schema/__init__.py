@@ -13,6 +13,7 @@ from graphene import (
     DateTime,
 )
 from eips_exposed.common.db import (
+    joinedload,
     yield_session,
     EIP as DBEIP,
     Error as DBError,
@@ -116,27 +117,39 @@ class Query(ObjectType):
 
     def resolve_eip(_, info, eip_id):
         with yield_session() as sess:
-            return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).one_or_none()
+            return sess.query(DBEIP).filter(DBEIP.eip_id == eip_id).options(
+                joinedload('tags')
+            ).one_or_none()
 
     def resolve_eips(_, info, limit, offset, tag=None, category=None, status=None, search=None):
         with yield_session() as sess:
             if tag:
                 return sess.query(DBEIP).filter(
                     DBEIP.tags.any(tag_name=tag)
-                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).options(
+                    joinedload('tags')
+                ).all()
             elif category:
                 return sess.query(DBEIP).filter(
                     DBEIP.category == category.upper()
-                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).options(
+                    joinedload('tags')
+                ).all()
             elif status:
                 return sess.query(DBEIP).filter(
                     DBEIP.status == status.upper()
-                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                ).order_by(DBEIP.eip_id).limit(limit).offset(offset).options(
+                    joinedload('tags')
+                ).all()
             else:
                 if search:
-                    return DBEIP.search(sess, search).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                    return DBEIP.search(sess, search).order_by(DBEIP.eip_id).limit(limit).offset(offset).options(
+                        joinedload('tags')
+                    ).all()
                 else:
-                    return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).all()
+                    return sess.query(DBEIP).order_by(DBEIP.eip_id).limit(limit).offset(offset).options(
+                        joinedload('tags')
+                    ).all()
 
     def resolve_commits(_, info, limit, offset, eip_id=None, search=None):
         with yield_session() as sess:
