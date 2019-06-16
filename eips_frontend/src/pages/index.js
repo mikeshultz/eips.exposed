@@ -1,7 +1,9 @@
 import EIPList from './EIPList';
-import EIPDetail from './EIPDetail';
+import EIPListCompact from './EIPListCompact';
+import EIPDetailPage from './EIPDetailPage';
 
 export {
   EIPList,
-  EIPDetail
+  EIPListCompact,
+  EIPDetailPage
 }

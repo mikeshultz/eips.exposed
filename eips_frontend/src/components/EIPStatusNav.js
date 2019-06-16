@@ -1,12 +1,12 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import EIPCategoryButton from './EIPCategoryButton';
-import { getCategories } from '../queries';
+import EIPStatusButton from './EIPStatusButton';
+import { getStatuses } from '../queries';
 
-class EIPCategoryNav extends React.Component {
+class EIPStatusNav extends React.Component {
   render () {
     return (
-      <Query query={getCategories}>
+      <Query query={getStatuses}>
         {({ loading, error, data }) => {
           if (loading) return (
             <div className="notification is-info">
@@ -19,17 +19,17 @@ class EIPCategoryNav extends React.Component {
             </div>
           );
 
-          const categoryButtons = data.categories.reduce((acc, {category, eipCount}) => {
-            if (category == null) return acc
+          const statusButtons = data.statuses.reduce((acc, {status, eipCount}) => {
+            if (status == null) return acc
             acc.push((
-              <EIPCategoryButton key={category} category={category} count={eipCount} />
+              <EIPStatusButton key={status} status={status} count={eipCount} />
             ));
             return acc
           }, []);
 
           return (
-            <div className="category-nav">
-              {categoryButtons}
+            <div className="status-nav">
+              {statusButtons}
             </div>
           );
         }}
@@ -38,4 +38,4 @@ class EIPCategoryNav extends React.Component {
   }
 }
 
-export default EIPCategoryNav;
+export default EIPStatusNav;

@@ -16,7 +16,8 @@
 @import url('https://fonts.googleapis.com/css?family=Biryani&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Martel+Sans&display=swap');
 
-$primary-bg: #88A8CF;
+$gray: #EFEFEF;
+$primary-bg: #bdbdbd; /*#88A8CF;*/
 $light-bg: #F5F5F5;
 $med-bg: #BDBDBD;
 
@@ -126,6 +127,48 @@ code {
     }
 }
 
+#eips-compact {
+    padding-top: 0;
+    .eips-rows {
+        .eip-bar-combined {
+            @extend .is-clearfix;
+            background: $light-bg;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            margin: 1rem;
+            padding: 0.5rem;
+            .eip.bar {
+                .bar-title {
+                    color: #000;
+                    max-width: 80%;
+                    .level-item {
+                        display: contents;
+                        p {
+                            /*text-overflow: ellipsis;
+                            width: 95%;
+                            display: block;
+                            overflow: hidden;*/
+                        }
+                    }
+                }
+                .bar-meta {
+                    @extend .is-hidden-mobile;
+                    .bar-status {}
+                    .bar-type {}
+                    .bar-category {}
+                    .bar-expand {
+                        .expand {
+                            font-size: 2rem;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+            .bar-content {}
+        }
+    }
+}
+
 #eip-detail {
     margin-top: 2rem;
     .container {
@@ -168,6 +211,9 @@ a.tag {
     }
 }
 
+.loading.notification {
+    background: $gray;
+}
 .loading-overlay-parent {
     overflow: hidden;
     position: relative;
@@ -176,7 +222,7 @@ a.tag {
         position: absolute;
         width: 100%;
         height: 100%;
-        background: #EFEFEF;
+        background: $gray;
         opacity: 0.75;
     }
 }
@@ -193,6 +239,16 @@ a.tag {
 
 .no-results {
     margin-left: 2rem;
+}
+
+@media (min-width: 768px) {
+    .level.category-status {
+        margin-bottom: 0;
+        .level-left,
+        .level-right {
+            width: 50%;
+        }
+    }
 }
 
 .category-nav,

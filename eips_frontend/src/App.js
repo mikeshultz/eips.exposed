@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { BrowserRouter, Route } from 'react-router-dom'
 
-import { EIPList, EIPDetail } from './pages';
+import { EIPList, EIPListCompact, EIPDetailPage } from './pages';
 import { Header, Footer } from './components';
 import { getStats } from './queries';
 
@@ -19,11 +19,11 @@ class App extends React.Component {
             }}
           </Query>
 
-          <Route path="/eip/:eipId" component={EIPDetail} />
-          <Route path="/tagged/:tagName" exact component={EIPList} />
-          <Route path="/category/:category" exact component={EIPList} />
-          <Route path="/status/:status" exact component={EIPList} />
-          <Route path="/" exact component={EIPList} />
+          <Route path="/eip/:eipId" component={EIPDetailPage} />
+          <Route path="/tagged/:tagName" exact component={EIPListCompact} />
+          <Route path="/category/:category" exact component={EIPListCompact} />
+          <Route path="/status/:status" exact component={EIPListCompact} />
+          <Route path="/" exact component={EIPListCompact} />
 
           <Footer />
         </div>
