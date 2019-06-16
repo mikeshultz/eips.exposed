@@ -6,6 +6,10 @@ import { ApolloProvider } from 'react-apollo';
 import graphql from './lib/graphql'
 import * as serviceWorker from './serviceWorker';
 
+if (window.location.hostname !== 'localhost' && window.location.protocol !== 'https:') {
+  window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+
 ReactDOM.render(
   <ApolloProvider client={graphql}>
     <App />
