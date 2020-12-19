@@ -14,7 +14,7 @@
       - whois
     state: present
 
-- name: "Set root mail alias to ops@lunyr.com"
+- name: "Set root mail alias to ops_email"
   lineinfile:
     path: /etc/aliases
     regexp: "root:[\\s]+[\\w@\\.\\-]+"
