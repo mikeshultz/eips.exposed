@@ -1,4 +1,6 @@
 attrdict>=2.0.1
+# gitdb2 version pinned for compat
+gitdb2==2.0.6
 GitPython==2.1.11
 graphene==2.1.3
 graphene-tornado==2.1.0
