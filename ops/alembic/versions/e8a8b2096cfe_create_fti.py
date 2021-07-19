@@ -30,11 +30,25 @@ def upgrade():
         unique=False,
         postgresql_using='gin'
     )
+    # Old style
+    # op.execute("""
+    #     CREATE TRIGGER update_eip_tsv
+    #     BEFORE INSERT OR UPDATE ON eip FOR EACH ROW EXECUTE PROCEDURE
+    #     tsvector_update_trigger(search_vector, 'pg_catalog.english', title, full_text);
+    # """)
     op.execute("""
-        CREATE TRIGGER update_eip_tsv
-        BEFORE INSERT OR UPDATE ON eip FOR EACH ROW EXECUTE PROCEDURE
-        tsvector_update_trigger(search_vector, 'pg_catalog.english', title, full_text);
+        CREATE FUNCTION eip_search_update() RETURNS trigger AS $$
+        begin
+          new.search_vector :=
+             setweight(to_tsvector('pg_catalog.english', coalesce(new.eip_id::varchar,'')), 'A') ||
+             setweight(to_tsvector('pg_catalog.english', coalesce(new.title,'')), 'B') ||
+             setweight(to_tsvector('pg_catalog.english', coalesce(new.full_text,'')), 'C');
+          return new;
+        end
+        $$ LANGUAGE plpgsql;
     """)
+    op.execute("""CREATE TRIGGER update_eip_tsv
+        BEFORE INSERT OR UPDATE ON eip FOR EACH ROW EXECUTE PROCEDURE eip_search_update();""")
 
     # Commit search
     op.add_column('commit', Column(
