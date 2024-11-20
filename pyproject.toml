@@ -1,0 +1,16 @@
+[project]
+name = "eips-exposed"
+version = "0.1.0"
+description = "Ethereum design documents (EIP and ERC) explorer"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1.2,<6",
+    "psycopg2-binary>=2.9.10",
+    "typesense>=0.21.0",
+]
+
+[dependency-groups]
+dev = [
+    "pudb>=2024.1.3",
+]
