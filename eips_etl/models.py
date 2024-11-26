@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Self
+from typing import Any, Self
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
@@ -42,17 +42,21 @@ class Commit(models.Model):
         return str(self.commit_id)[:7]
 
     @classmethod
-    def from_dulwich(cls, commit: DulwichCommit) -> Self:
+    def dulwich_to_dict(cls, commit: DulwichCommit) -> dict[str, Any]:
         author_time = gitstamp_to_dt(commit.author_time, commit.author_timezone)
         commit_time = gitstamp_to_dt(commit.commit_time, commit.commit_timezone)
-        return cls(
+        return dict(
             commit_id=commit.id.decode(),
-            author=Person.objects.get_or_create(person_string=commit.author)[0],
-            committer=Person.objects.get_or_create(person_string=commit.committer)[0],
+            author=Person.objects.get_or_create(person_string=commit.author.decode())[
+                0
+            ],
+            committer=Person.objects.get_or_create(
+                person_string=commit.committer.decode()
+            )[0],
             author_time=author_time,
             commit_time=commit_time,
-            gpg_sig=commit.gpgsig or b"",
-            message=commit.message or b"",
+            gpg_sig=commit.gpgsig.decode() if commit.gpgsig else "",
+            message=commit.message.decode() if commit.message else "",
             parents=[p.decode() for p in commit.parents],
         )
 
@@ -105,11 +109,19 @@ class Document(models.Model):
         ]
         unique_together = [["document_id", "commit"]]
 
+    @property
+    def link(self):
+        return f"/{self.document_type.lower()}s/{self.document_type.lower()}-{self.document_id}.html"
+
+    @property
+    def name(self):
+        return f"{self.document_type}-{self.document_id}"
+
     def __str__(self) -> str:
-        return f"<Document: {self.document_type} {self.document_id}: {self.title}>"
+        return f"<Document: {self.name}: {self.title}>"
 
     @classmethod
-    def from_dict(cls, commit: Commit, doc: dict) -> Self:
+    def from_dict(cls, commit: Commit, doc: dict) -> tuple[Self, list[Person]]:
         new_doc = cls(
             document_id=doc["id"],
             commit=commit,
@@ -130,17 +142,20 @@ class Document(models.Model):
             body=doc["body"],
         )
 
-        if doc_authors := doc.get("authors", []):
-            authors = Person.objects.filter(person_string__in=doc_authors)
+        authors: list[Person] = []
 
-            if len(doc_authors) != len(authors):
-                unmatched = set(doc_authors) - set([str(a) for a in authors])
+        if doc_authors := doc.get("author", []):
+            existing = Person.objects.filter(person_string__in=doc_authors)
+
+            if len(doc_authors) != len(existing):
+                unmatched = set(doc_authors) - set([str(a) for a in existing])
 
                 for author_str in unmatched:
-                    author = Person(author_string=author_str)
-                    author.save()
+                    try:
+                        author = Person.objects.get(person_string=author_str)
+                    except Person.DoesNotExist:
+                        author = Person(person_string=author_str)
+                    # author = new_doc.authors.get_or_create(person_string=author_str)
                     authors.append(author)
 
-            new_doc.authors = authors
-
-        return new_doc
+        return new_doc, authors

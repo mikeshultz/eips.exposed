@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="106.68mm" height="16.51mm" fill-rule="evenodd" stroke-linejoin="round" stroke-width="28.222" preserveAspectRatio="xMidYMid" version="1.2" viewBox="0 0 10668 1651" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export">
+ <defs class="ClipPathGroup">
+  <clipPath id="presentation_clip_path">
+   <rect width="10668" height="1651"/>
+  </clipPath>
+  
+ </defs>
+ <defs>
+  <font id="EmbeddedFont_1" horiz-adv-x="2048">
+   <font-face font-family="Overpass ExtraBold embedded" ascent="1535" descent="503" units-per-em="2048"/>
+   <missing-glyph d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z" horiz-adv-x="2048"/>
+   <glyph d="M 61,0 L 371,0 535,236 C 557,268 584,305 594,332 608,305 631,266 653,236 L 819,0 1128,0 750,543 1102,1047 793,1047 653,848 C 631,817 608,778 594,752 584,778 557,815 535,848 L 397,1047 88,1047 440,543 61,0 Z" horiz-adv-x="1063" unicode="x"/>
+   <glyph d="M 500,-25 C 748,-25 909,88 909,293 909,502 745,582 565,641 457,674 360,713 360,768 360,819 414,846 494,846 575,846 635,817 698,758 L 877,903 C 801,991 676,1071 494,1071 285,1071 113,967 113,776 113,594 238,510 471,432 592,385 662,356 662,293 662,225 596,201 504,201 393,201 301,270 258,313 L 82,164 C 164,49 330,-25 500,-25 Z" horiz-adv-x="825" unicode="s"/>
+   <glyph d="M 643,-25 C 893,-25 1077,178 1077,522 1077,877 903,1071 645,1071 541,1071 467,1030 420,971 L 420,1047 154,1047 154,-410 420,-289 420,76 C 467,16 539,-25 643,-25 Z M 602,231 C 510,231 446,274 420,317 L 420,731 C 459,782 514,815 602,815 739,815 811,698 811,522 811,336 735,231 602,231 Z" horiz-adv-x="921" unicode="p"/>
+   <glyph d="M 584,-25 C 879,-25 1065,178 1065,522 1065,862 879,1071 584,1071 289,1071 102,862 102,522 102,178 289,-25 584,-25 Z M 584,231 C 453,231 369,340 369,522 369,705 453,815 584,815 719,815 799,705 799,522 799,340 719,231 584,231 Z" horiz-adv-x="960" unicode="o"/>
+   <glyph d="M 592,-25 C 766,-25 893,45 981,152 L 817,317 C 758,242 688,209 592,209 477,209 375,285 365,420 L 1047,420 C 1055,477 1055,537 1055,578 1055,913 850,1071 592,1071 293,1071 102,862 102,524 102,180 289,-25 592,-25 Z M 367,645 C 383,776 467,838 592,838 698,838 778,768 795,645 L 367,645 Z" horiz-adv-x="950" unicode="e"/>
+   <glyph d="M 535,-25 C 641,-25 717,12 760,76 L 760,0 1026,0 1026,1479 760,1358 760,971 C 713,1030 641,1071 537,1071 287,1071 102,862 102,524 102,170 272,-25 535,-25 Z M 578,231 C 440,231 369,344 369,524 369,713 444,815 578,815 670,815 731,768 760,729 L 760,315 C 721,260 666,231 578,231 Z" horiz-adv-x="921" unicode="d"/>
+   <glyph d="M 164,0 L 440,0 440,528 778,528 C 1128,528 1268,772 1268,981 1268,1204 1141,1434 778,1434 L 164,1434 164,0 Z M 791,791 L 440,791 440,1171 791,1171 C 938,1171 981,1063 981,981 981,891 930,791 791,791 Z" horiz-adv-x="1101" unicode="P"/>
+   <glyph d="M 174,0 L 451,0 451,1434 174,1434 174,0 Z" horiz-adv-x="277" unicode="I"/>
+   <glyph d="M 164,0 L 1186,0 1186,262 440,262 440,608 854,608 854,870 440,870 440,1171 1143,1171 1143,1434 164,1434 164,0 Z" horiz-adv-x="1019" unicode="E"/>
+  </font>
+ </defs>
+ <defs class="TextShapeIndex">
+  
+ </defs>
+ <defs class="EmbeddedBulletChars">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ </defs>
+ 
+  <g id="id2" class="Master_Slide">
+   
+   
+  </g>
+ 
+ <g class="SlideGroup">
+  
+   <g id="container-id1">
+    <g id="id1" class="Slide" clip-path="url(#presentation_clip_path)">
+     <g class="Page">
+      <g class="TextShape">
+       <g id="id3">
+        <rect class="BoundingBox" x="-200" y="-140" width="3978" height="1945" fill="none"/>
+        <text class="SVGTextShape"><tspan class="TextParagraph"><tspan class="TextPosition" x="50" y="1255"><tspan fill="rgb(0,0,0)" font-family="Overpass ExtraBold" font-size="1693px" font-weight="400" style="white-space:pre">EIPs</tspan></tspan></tspan></text>
+       </g>
+      
+      
+       <g id="id4">
+        <rect class="BoundingBox" x="3788" y="-140" width="7093" height="1945" fill="none"/>
+        <text class="SVGTextShape"><tspan class="TextParagraph"><tspan class="TextPosition" x="4038" y="1255"><tspan fill="rgb(200,0,70)" font-family="Overpass ExtraBold" font-size="1693px" font-weight="400" style="white-space:pre">exposed</tspan></tspan></tspan></text>
+       </g>
+      </g>
+      <g class="com.sun.star.drawing.CustomShape">
+       <g id="id5">
+        <rect class="BoundingBox" x="3640" y="908" width="320" height="320" fill="none"/>
+        <path d="m3959 1068c0 27-7 55-21 79s-35 45-59 59-52 21-79 21c-28 0-56-7-80-21s-45-35-59-59-21-52-21-79c0-28 7-56 21-80s35-45 59-59 52-21 80-21c27 0 55 7 79 21s45 35 59 59 21 52 21 79v1z"/>
+       </g>
+      </g>
+     </g>
+    </g>
+   </g>
+  
+ </g>
+</svg>

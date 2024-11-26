@@ -6,7 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.1.2,<6",
+    "markdown>=3.7",
     "psycopg2-binary>=2.9.10",
+    "pygments>=2.18.0",
     "typesense>=0.21.0",
 ]
 

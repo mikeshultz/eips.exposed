@@ -6,6 +6,8 @@ A Django app that handles ETL and Web application for [eips.exposed](https://eip
 
 ### Database Setup
 
+Create the postgres DB:
+
 ```psql
 postgres=# create user eips;
 CREATE ROLE
@@ -17,4 +19,10 @@ postgres=# \connect eips
 You are now connected to database "eips" as user "postgres".
 postgres=# grant all on schema public to eips;
 GRANT
+```
+
+Run the migrations:
+
+```
+$ python manage.py migrate
 ```

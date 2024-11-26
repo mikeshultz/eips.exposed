@@ -1,5 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 
 
-def stats(_request) -> HttpResponse:
+def stats(_request: HttpRequest) -> HttpResponse:
     return HttpResponse(b"Stats page")

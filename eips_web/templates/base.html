@@ -1,0 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'codehilite.css' %}">
+    <script type="text/javascript" src="/static/konva.min.js"></script>
+    <script type="text/javascript" src="/static/pixelateLogo.js"></script>
+</head>
+<body>
+    <header id="logo"><a href="/">eips.<span class="exposed">exposed</span></a></header>
+    {% block content %}{% endblock %}
+</body>
+</html>

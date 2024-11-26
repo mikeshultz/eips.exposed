@@ -15,7 +15,7 @@ def dump_dict(inst: type[models.Model], fields: list[str]) -> dict[str, Any]:
         if isinstance(ov, datetime):
             return int(ov.timestamp())  # unix timestamp
         if isinstance(ov, list):
-            return ", ".join(ov)
+            return ", ".join(str(ov))
         return ov
 
     return {
@@ -72,10 +72,11 @@ class Command(BaseCommand):
         }
         client.collections.create(commit_schema)
 
-        commit_schema = {
+        document_schema = {
             "name": "document",
             "fields": [
                 {"name": "document_id", "type": "int32", "facet": True},
+                {"name": "document_id_string", "type": "string"},
                 {"name": "commit", "type": "string", "facet": True},
                 {"name": "document_type", "type": "string", "facet": True},
                 {"name": "created", "type": "int64"},
@@ -91,7 +92,7 @@ class Command(BaseCommand):
             ],
             "default_sorting_field": "updated",
         }
-        client.collections.create(commit_schema)
+        client.collections.create(document_schema)
 
         for commit in Commit.objects.all():
             doc = dump_dict(
@@ -136,5 +137,7 @@ class Command(BaseCommand):
                 doc["created"] = 0
             if not doc.get("updated"):
                 doc["updated"] = doc["created"]
+
+            doc["document_id_string"] = f"{doc['document_type']}-{doc['document_id']}"
 
             client.collections["document"].documents.create(doc)

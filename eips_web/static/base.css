@@ -1,0 +1,229 @@
+:root {
+    --primary-light: #333333;
+    --background-light: #e6e6e6;
+    --primary-dark: #e6e6e6;
+    --background-dark: #171717;
+    --background-secondary-light: #d7d7df;
+    --background-secondary-dark: #393939;
+    --link: #5353ce;
+    --link-visited: #ad52ec;
+}
+
+@font-face {
+  font-family: "Ledger";
+  src: url("/static/Ledger-Regular.ttf");
+}
+@font-face {
+  font-family: "Encode";
+  src: url("/static/EncodeSans-VariableFont.ttf");
+}
+@font-face {
+  font-family: "KohSantepheap-Regular";
+  src: url("/static/KohSantepheap-Regular.ttf");
+}
+@font-face {
+  font-family: "KohSantepheap-Light";
+  src: url("/static/KohSantepheap-Light.ttf");
+}
+@font-face {
+  font-family: "B612Mono-Regular";
+  src: url("/static/B612Mono-Regular.ttf");
+}
+
+a { color: var(--link); }
+a:visited { color: var(--link-visited); }
+
+header { margin-bottom: 1rem; }
+
+body {
+    background-color: var(--background-light);
+    color: var(--primary-light);
+    font-family: "KohSantepheap-Light", serif;
+    font-weight: 300;
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+h2 {
+    border-bottom: 1px var(--background-secondary-light) solid;
+    margin-top: 2.5rem;
+}
+h1, h2, h3, h4, h5 { font-family: "Encode", sans-serif; }
+code {
+    font-family: "B612Mono-Regular", monospace;
+    font-size: 0.75rem;
+    background-color: var(--background-secondary-light);
+    padding: 0.25rem;
+}
+
+#logo {
+    cursor: pointer;
+    width: 300px;
+    height: 50px;
+    font-family: "Encode", sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+}
+#logo a {
+    color: #000;
+    text-decoration: none;
+}
+#logo a .exposed { color: #c80046; }
+
+.commit-id { font-family: B612Mono-Regular, monospace; font-size: 75%; }
+ul.commit-list, ul.pop-list { list-style-type: none; padding: 0; }
+ul.pop-list li,
+ul.commit-list li {
+    margin-bottom: 0.5rem;
+}
+ul.pop-list li a,
+ul.commit-list li a {
+    text-decoration: none;
+    color: inherit;
+}
+ul.pop-list li a .doc-id,
+ul.commit-list li a .commit-id {
+    color: var(--link);
+    text-decoration: underline;
+}
+ul.pop-list li a:visited .doc-id,
+ul.commit-list li a:visited .commit-id {
+    color: var(--link-visited);
+}
+
+.codehilite {
+    overflow-x: scroll;
+    padding: 0.2rem 1rem;
+    code {
+        background-color: inherit;
+        padding: inherit;
+    }
+}
+
+.body img {
+    max-width: 100%;
+}
+
+.doc-meta {
+    display: grid;
+    grid-template-columns: auto auto;
+    /*border-color: var(--background-secondary-light);
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    padding-bottom: 1rem;*/
+}
+.doc-meta .document-header {
+    grid-column: 1;
+    /*border-color: var(--background-secondary-light);
+    border-style: solid;
+    border-width: 0 1px 3px 0;*/
+}
+.doc-meta .document-header table {}
+.doc-meta .document-header table tr:nth-child(odd) {
+    background-color: var(--background-secondary-light);
+}
+.doc-meta .document-header table tr td { padding: 0.5rem }
+.doc-meta .document-header table tr td ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0;
+}
+.doc-meta .document-header table tr td ul li {}
+.doc-meta .document-header table tr td ul li p { margin: 0; }
+
+.doc-meta .side-box {
+    display: block;
+    grid-column: 2;
+    padding-left: 1rem;
+}
+.doc-meta .side-box .description {}
+
+.commit-docs table { width: 100%; margin-top: 2rem; }
+.commit-docs table tr {}
+.commit-docs table tbody tr:nth-child(odd) {
+    background-color: var(--background-secondary-light);
+}
+.commit-docs table tr td { padding: 0.5rem }
+.commit-docs table tr td ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0;
+}
+.commit-docs table tr td ul li {}
+.commit-docs table tr td ul li p { margin: 0; }
+
+.searchbox { margin-top: 1.5rem; }
+.searchbox input, .searchbox button {
+    background: var(--background-secondary-light);
+}
+.searchbox input {
+    height: 2.5rem;
+    width: calc(100% - 150px);
+    font-size: 2rem;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #c80046;
+}
+.searchbox input:first-line {
+    display: inline-block;    
+}
+.searchbox button {
+    height: 2.5rem;
+    width: 130px;
+    font-size: 2rem;
+    margin: 1px;
+    padding: 0;
+    border: 1px solid #c80046;
+}
+
+ul.search-results { list-style-type: none; padding-left: 0 }
+ul.search-results li {}
+ul.search-results li a { font-weight: bold; font-size: 125%; }
+ul.search-results li p { font-style: italic; margin-top: 0; }
+
+.container {
+    display: grid;
+    grid-template-rows: auto auto;
+}
+.container .row {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.container .row .fullrow {
+    grid-column: 1 / 4;
+ }
+.container .row .left2 {
+    grid-column: 1 / 3;
+}
+.container .row .right1 {
+    grid-column: 3 / 4;
+}
+
+ul.pop-list { list-style-type: none; padding: 0; }
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--background-dark);
+        color: var(--primary-dark);
+    }
+    h2 { border-bottom: 1px var(--background-secondary-dark) solid; }
+    code {
+        background-color: var(--background-secondary-dark);
+    }
+    .doc-meta {
+        border-color: var(--background-secondary-dark);
+    }
+    .doc-meta .document-header {
+        border-color: var(--background-secondary-dark);
+    }
+    .doc-meta .document-header table tr:nth-child(odd) {
+        background-color: var(--background-secondary-dark);
+    }
+    .commit-docs table tbody tr:nth-child(odd) {
+        background-color: var(--background-secondary-dark);
+    }
+    .searchbox input, .searchbox button {
+        background: var(--background-secondary-dark);
+    }
+}

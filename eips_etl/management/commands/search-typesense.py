@@ -11,8 +11,6 @@ def dump_dict(inst: type[models.Model], fields: list[str]) -> dict[str, Any]:
     def coerce(ov: Any) -> Any:
         if isinstance(ov, datetime):
             return int(ov.timestamp())  # unix timestamp
-        # if isinstance(ov, date):
-        #     return int(ov.timestamp())  # unix timestamp
         return ov
 
     return {

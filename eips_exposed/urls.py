@@ -19,4 +19,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path("etl/", include("eips_etl.urls")),
+    path("", include("eips_web.urls")),
 ]

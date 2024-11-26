@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load decode %}
+{% load markdown %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="fullrow searchbox">
+                <form id="search-form" method="get" action="/search.html">
+                    <input type="text" id="search" name="q" value="{{ q }}">
+                    <button id="search-button">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="left2">
+                <h2>Documents</h2>
+                <ul class="search-results">
+                    {% for item in doc_hits %}
+                    <li>
+                        <a href="{{ item.link }}">{{ item.title }}</a>
+                        <p>{{ item.snippet }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="right1">
+                <h2>Commits</h2>
+                <ul class="search-results">
+                    {% for item in commit_hits %}
+                    <li>
+                        <a href="{{ item.link }}">{{ item.title|slice:":7" }}</a>
+                        <p>{{ item.snippet }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

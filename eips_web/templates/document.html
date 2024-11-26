@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load censoremail %}
+{% load fixlinks %}
+{% load ghusername %}
+{% load markdown %}
+
+{% block title %}{{ document_type }}-{{ document_id }}{% endblock %}
+
+{% block content %}
+    <h1>{{ document_type }}-{{ document_id }}</h1>
+    <div class="doc-meta">
+        <div class="document-header">
+            <table>
+                <tr>
+                    <th>Created</th>
+                    <td>{{ created|date:"Y-m-d" }}</td>
+                </tr>
+                {% if updated %}
+                <tr>
+                    <th>Updated</th>
+                    <td>{{ updated }}</td>
+                </tr>
+                {% endif %}
+                {% if status %}
+                <tr>
+                    <th>Status</th>
+                    <td>{{ status }}</td>
+                </tr>
+                {% endif %}
+                {% if category %}
+                <tr>
+                    <th>Category</th>
+                    <td>{{ category }}</td>
+                </tr>
+                {% endif %}
+                {% if type %}
+                <tr>
+                    <th>Type</th>
+                    <td>{{ type }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>Authors</th>
+                    <td>
+                        <ul>
+                        {% for author in authors %}
+                            <li>{{ author|censoremail|ghusername|markdown }}</li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% if resolution %}
+                <tr>
+                    <th>Resolution</th>
+                    <td>{{ resolution }}</td>
+                </tr>
+                {% endif %}
+                {% if review_period_end %}
+                <tr>
+                    <th>Review Period End</th>
+                    <td>{{ review_period_end }}</td>
+                </tr>
+                {% endif %}
+                {% if requires %}
+                <tr>
+                    <th>Requires</th>
+                    <td>
+                        <ul>
+                        {% for required in requires %}{{ review_period_end }}
+                            <li><a href="/eips/eip-{{ required }}.html">EIP-{{ required }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endif %}
+                {% if replaces %}
+                <tr>
+                    <th>Replaces</th>
+                    <td>
+                        <ul>
+                        {% for replaced in replaces %}{{ review_period_end }}
+                            <li><a href="eip-{{ replaced }}.html">EIP-{{ replaced }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endif %}
+                {% if superseded_by %}
+                <tr>
+                    <th>Superseded By</th>
+                    <td>
+                        <ul>
+                        {% for superceeded in superseded_by %}{{ review_period_end }}
+                            <li><a href="eip-{{ superceeded }}.html">EIP-{{ superceeded }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+        <div class="side-box">
+            <p class="description">{{ description }}</p>
+            <div class="doc-links">
+            {% if discussions_to %}
+                <a href="{{ discussions_to }}">{{ discussions_to }}</a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="body">{{ body|fixlinks|ghusername|markdown }}</div>
+{% endblock %}

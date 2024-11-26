@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from django.core.management.base import BaseCommand  # , CommandError
-from eips import EIPs
+from eips import ERCs
 
 from eips_etl.importer import import_repo
 
@@ -23,5 +23,5 @@ class Command(BaseCommand):
         if workdir := options.get("workdir"):
             kwargs["workdir"] = workdir
 
-        count = import_repo(EIPs, **kwargs)
-        print(f"Imported {count} EIPs")
+        count = import_repo(ERCs, **kwargs)
+        print(f"Imported {count} ERCs")

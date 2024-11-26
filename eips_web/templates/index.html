@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load decode %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="fullrow searchbox">
+                <form id="search-form" method="get" action="/search.html">
+                    <input type="text" id="search" name="q">
+                    <button id="search-button">Search</button>
+                </form>
+            </div>
+            <div class="fullrow highlights">
+                <p>
+                {% for highlight in highlights %}
+                    {% if forloop.counter > 1 %}, {% endif %}
+                    <a href="{{ highlight.link }}">{{ highlight.text }}</a>
+                {% endfor %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="left2">
+                <h2>Latest Changes</h2>
+                <ul class="commit-list">
+                {% for commit in commits %}
+                    <li>
+                        <a href="/commits/commit-{{ commit.commit_id }}.html"><span class="commit-id">{{ commit.commit_id|slice:":7" }}</span> - {{ commit.message }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="right1">
+                <div class="row">
+                    <div>
+                        <h2>Updated EIPs</h2>
+                        <ul class="pop-list">
+                        {% for pop in eips %}
+                            <li><a href="/eips/eip-{{ pop.document_id }}.html"><span class="doc-id">EIP-{{pop.document_id}}</span> - {{ pop.title }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                    <div>
+                        <h2>Updated ERCs</h2>
+                        <ul class="pop-list">
+                        {% for pop in ercs %}
+                            <li><a href="/ercs/erc-{{ pop.document_id }}.html"><span class="doc-id">ERC-{{pop.document_id}}</span> - {{ pop.title }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
