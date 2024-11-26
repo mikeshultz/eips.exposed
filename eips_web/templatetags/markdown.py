@@ -8,4 +8,6 @@ register = template.Library()
 @register.filter(name="markdown")
 def markdown_filter(value: str):
     """Render markdownt to HTML"""
-    return SafeString(markdown(value, extensions=["fenced_code", "codehilite"]))
+    return SafeString(
+        markdown(value, extensions=["fenced_code", "codehilite", "tables"])
+    )

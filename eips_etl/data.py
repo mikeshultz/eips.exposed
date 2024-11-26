@@ -159,14 +159,9 @@ def get_highlights() -> Sequence[Document]:
         where |= Q(document_id=doc_id, document_type=doc_type)
 
     highlights = []
-    print("****where:", where)
     for doc in (
-        # .select_related("commit")
-        # .annotate(max_commit_time=Max("commit__commit_time"))
         Document.objects.filter(where).values("document_type", "document_id").distinct()
-        # .aggregate(Max("commit__commit_time"))
     ):
-        print("doc:", doc.keys())
         text = f"{doc['document_type']}-{doc['document_id']}"
         highlights.append(
             Highlight(

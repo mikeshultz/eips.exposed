@@ -6,13 +6,18 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.1.2,<6",
+    "eips",
     "markdown>=3.7",
     "psycopg2-binary>=2.9.10",
     "pygments>=2.18.0",
     "typesense>=0.21.0",
+    "whitenoise>=6.8.2",
 ]
 
 [dependency-groups]
 dev = [
     "pudb>=2024.1.3",
 ]
+
+[tool.uv.sources]
+eips = { git = "https://github.com/mikeshultz/python-eips.git", branch = "feat/processing" }

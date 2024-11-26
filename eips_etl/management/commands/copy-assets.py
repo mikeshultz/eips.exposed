@@ -6,7 +6,7 @@ from eips import EIPs
 
 
 class Command(BaseCommand):
-    help = "Updates EIPs records in the dataase"
+    help = "Copy assets from document repo to django static dir."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -32,9 +32,6 @@ class Command(BaseCommand):
         print("options['dest']", options["dest"])
 
         for asset_path, asset_relative in eips.assets:
-            # print("asset_relative:", asset_relative)
-            # print("asset_path:", asset_path)
-            # asset_path.copy(options["dest"] / asset_relative)
             destfile = options["dest"] / asset_relative
             destfile.parent.mkdir(parents=True, exist_ok=True)
             copyfile(asset_path, destfile)
