@@ -1,0 +1,87 @@
+services:
+  db:
+    image: postgres:16
+    networks:
+      - eips
+    shm_size: 128mb
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: eips
+      POSTGRES_PASSWORD: eips
+
+  search:
+    image: typesense/typesense:27.1
+    command: ["--data-dir", "/data", "--api-key=asdf1234"]
+    networks:
+      - eips
+    volumes:
+      - /tmp/typesense-data:/data
+    ports:
+      - "0.0.0.0:8109:8108"
+
+  migrate:
+    build:
+      context: .
+      dockerfile: ./devops/dockerfiles/Dockerfile.migrate
+    networks:
+      - eips
+    # volumes:
+    #   - "./:/app"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PASS: eips
+      TYPESENSE_HOST: search
+    depends_on:
+      db:
+        condition: service_started
+      search:
+        condition: service_started
+
+  update:
+    build:
+      context: .
+      dockerfile: ./devops/dockerfiles/Dockerfile.update
+    networks:
+      - eips
+    # volumes:
+    #   - "./:/app"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PASS: eips
+    depends_on:
+      db:
+        condition: service_started
+
+  web:
+    build:
+      context: .
+      dockerfile: ./devops/dockerfiles/Dockerfile.web
+    networks:
+      - eips
+    # volumes:
+    #   - "./:/app"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PASS: eips
+      # eips must be set in /etc/hosts
+      ALLOWED_HOSTS: eips
+      TYPESENSE_HOST: search
+      TYPESENSE_PORT: 8108
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "0.0.0.0:8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+      start_interval: 5s
+
+networks:
+  eips:
+    name: eips
+#     driver: bridge
