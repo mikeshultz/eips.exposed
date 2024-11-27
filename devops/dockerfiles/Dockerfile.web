@@ -9,6 +9,8 @@ COPY uv.lock /app/
 COPY pyproject.toml /app/
 COPY manage.py /app/
 COPY devops/scripts/web-entrypoint.sh /app/
+COPY devops/scripts/migrate-entrypoint.sh /app/
+COPY devops/scripts/update-entrypoint.sh /app/
 
 WORKDIR /app
 
