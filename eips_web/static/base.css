@@ -227,3 +227,21 @@ ul.pop-list { list-style-type: none; padding: 0; }
         background: var(--background-secondary-dark);
     }
 }
+
+@media screen and (max-width: 600px) {
+    .container {
+        grid-template-rows: auto;
+    }
+    .container .row {
+        grid-template-columns: auto;
+    }
+    .container .row .fullrow {
+        grid-column: 1;
+    }
+    .container .row .left2 {
+        grid-column: 1 !important;
+    }
+    .container .row .right1 {
+        grid-column: 1;
+    }
+}
