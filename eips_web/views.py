@@ -138,3 +138,7 @@ def commit_json(request: HttpRequest, commit_id: str) -> HttpResponse:
         .values(COMMIT_PROPS)
         .first()
     )
+
+
+def health_json(request: HttpRequest) -> HttpResponse:
+    return JsonResponse({"healthy": True})

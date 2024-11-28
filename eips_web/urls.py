@@ -11,6 +11,7 @@ urlpatterns = [
     path("ercs/erc-<int:doc_id>.json", views.erc_json, name="erc_json"),
     path("commits/commit-<str:commit_id>.html", views.commit_html, name="commit_html"),
     path("commits/commit-<str:commit_id>.json", views.commit_json, name="commit_json"),
+    path("health.json", views.health_json, name="health_json"),
     path("index.html", views.index_html, name="index_html"),
     path("", views.index_html, name="index_html"),
 ]
