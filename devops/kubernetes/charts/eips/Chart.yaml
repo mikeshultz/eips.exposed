@@ -1,0 +1,7 @@
+apiVersion: v2
+name: eips
+version: 0.1.0
+description: Chart for eips.exposed
+home: https://eips.exposed
+sources:
+  - https://github.com/mikeshultz/eips.exposed

@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eips-web.fullname" . }}
+  labels:
+    {{- include "eips-web.labels" . | nindent 4 }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      {{- include "eips-web.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eips-web.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.webImagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+      - name: migrations
+        image: {{ .Values.webImage }}
+        command: ['bash', './migrate-entrypoint.sh']
+        env:
+        - name: ALLOWED_HOSTS
+          value: {{ .Values.allowedHosts }}
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: host
+        - name: DATABASE_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: port
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: username
+        - name: DATABASE_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: password
+        - name: TYPESENSE_HOST
+          value: {{ include "typesense-search.fullname" . }}
+        - name: TYPESENSE_API_KEY
+          value: {{ .Values.typesenseApiKey }}
+      containers:
+      {{- $allowedHosts := split "," .Values.allowedHosts }}
+      - name: eips-web
+        image: {{ .Values.webImage }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health.json
+            port: 8000
+            httpHeaders:
+            - name: Host
+              value: {{ $allowedHosts._0 }}
+          initialDelaySeconds: 60
+          failureThreshold: 3
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health.json
+            port: 8000
+            httpHeaders:
+            - name: Host
+              value: {{ $allowedHosts._0 }}
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        env:
+        - name: ALLOWED_HOSTS
+          value: {{ .Values.allowedHosts }}
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: host
+        - name: DATABASE_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: port
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: username
+        - name: DATABASE_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.databaseAuthSecretName }}
+              key: password
+        - name: TYPESENSE_HOST
+          value: {{ include "typesense-search.fullname" . }}
+        - name: TYPESENSE_API_KEY
+          value: {{ .Values.typesenseApiKey }}

@@ -1,0 +1,5 @@
+webImage: image.mikes.network/eips/web:latest
+searchImage: typesense/typesense:27.1
+pullPolicy: Always
+#webImagePullSecrets: []
+#databaseAuthSecretName: eips-database-auth

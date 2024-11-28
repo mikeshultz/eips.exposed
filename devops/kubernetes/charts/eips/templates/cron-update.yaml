@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "update.fullname" . }}
+spec:
+  # Every hour on the 13th minute
+  schedule: "13 */1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- with .Values.webImagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          containers:
+          - name: update
+            image: {{ .Values.webImage }}
+            imagePullPolicy: {{ .Values.pullPolicy }}
+            command: ['bash', './update-entrypoint.sh']
+            env:
+            - name: EIPS_DATA_PATH
+              value: /var/eips
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.databaseAuthSecretName }}
+                  key: host
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.databaseAuthSecretName }}
+                  key: port
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.databaseAuthSecretName }}
+                  key: username
+            - name: DATABASE_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.databaseAuthSecretName }}
+                  key: password
+            volumeMounts:
+            - mountPath: /var/eips
+              name: eips-volume
+          restartPolicy: Never
+          volumes:
+          - name: eips-volume
+            emptyDir:
+              sizeLimit: 1Gi

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "typesense-search.fullname" . }}
+  labels:
+    {{- include "typesense-search.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "typesense-search.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "typesense-search.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: typesense
+        image: {{ .Values.searchImage }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        args: ["--data-dir", "/data"]
+        ports:
+        - containerPort: 8108
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8108
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8108
+        env:
+          - name: TYPESENSE_API_KEY
+            value: {{ .Values.typesenseApiKey }}
+        volumeMounts:
+        - mountPath: /data
+          name: data-volume
+      volumes:
+      - name: data-volume
+        emptyDir:
+          sizeLimit: 500Mi
