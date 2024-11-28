@@ -5,8 +5,6 @@ if [[ -z "$ASSETS_DIR" ]]; then
     export ASSETS_DIR=/tmp/assets
 fi
 
-#uv run -- python manage.py migrate
-#uv run -- python manage.py init-typesense --api-key asdf1234
 uv run -- python manage.py collectstatic --noinput
 uv run -- python manage.py copy-assets -d $ASSETS_DIR
 
