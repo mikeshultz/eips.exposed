@@ -11,7 +11,7 @@ from eips_etl.data import (
     get_latest_commits,
     get_popular_docs,
 )
-from eips_etl.models import Commit
+from eips_etl.models import Commit, Sitemap
 from eips_etl.search import search
 
 
@@ -160,3 +160,17 @@ def commit_json(request: HttpRequest, commit_id: str) -> HttpResponse:
 
 def health_json(request: HttpRequest) -> HttpResponse:
     return JsonResponse({"healthy": True})
+
+
+def sitemap_xml(request: HttpRequest) -> HttpResponse:
+    sitemap = Sitemap.objects.order_by("-generation_time").first()
+
+    if not sitemap:
+        return render(
+            request,
+            "http_error.html",
+            {"http_status": 404, "error": "Sitemap not yet generated"},
+            status=404,
+        )
+
+    return HttpResponse(sitemap.xml_data, content_type="text/xml")

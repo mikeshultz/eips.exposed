@@ -1,11 +1,13 @@
 from dataclasses import dataclass
-from typing import Any, Sequence
+from datetime import UTC, datetime
+from typing import Any, Iterator, Sequence
 
 from django.db import models
 from django.db.models import Q
 from eips.enum import DocumentType
 
 from eips_etl.models import Commit, Document
+from eips_web.object import SitemapURL
 
 # Model prop filters
 COMMIT_PROPS = [
@@ -147,7 +149,7 @@ def get_popular_docs(doc_type: type[DocumentType], count: int) -> Sequence[Docum
         )
         WHERE d.document_type = '{doc_type.value}'
         ORDER BY c.commit_time DESC
-        LIMIT 10
+        LIMIT {count}
     """
     return Document.objects.raw(query)
 
@@ -172,3 +174,38 @@ def get_highlights() -> Sequence[Document]:
         )
 
     return highlights
+
+
+def generate_sitemap() -> Iterator[SitemapURL]:
+    latest_commits = get_latest_commits(1)
+    if latest_commits:
+        latest_commit_time = Commit.objects.order_by("-commit_time")[0].commit_time
+    else:
+        latest_commit_time = datetime.now(tz=UTC)
+
+    # TODO: Include common search results
+    yield SitemapURL(loc="/", priority="1.0", lastmod=latest_commit_time.isoformat())
+    # yield SitemapURL(url=f"{base_url}/search.html", priority=0.8),
+    yield SitemapURL(
+        loc="/index.html",
+        priority="0.9",
+        lastmod=latest_commit_time.isoformat(),
+    )
+
+    def makeurl(doc: Document) -> SitemapURL:
+        return SitemapURL(
+            loc=doc.link,
+            priority="0.7",
+            lastmod=doc.commit.commit_time.isoformat(),
+        )
+
+    for doc_type in [DocumentType.EIP, DocumentType.ERC]:
+        for doc in get_popular_docs(doc_type, 10_000):
+            yield makeurl(doc)
+
+    for commit in Commit.objects.order_by("-commit_time").all():
+        yield SitemapURL(
+            loc=commit.link,
+            priority="0.4",
+            lastmod=commit.commit_time.isoformat(),
+        )

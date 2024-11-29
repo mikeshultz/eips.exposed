@@ -13,6 +13,7 @@ urlpatterns = [
     path("commits/commit-<str:commit_id>.html", views.commit_html, name="commit_html"),
     path("commits/commit-<str:commit_id>.json", views.commit_json, name="commit_json"),
     path("health.json", views.health_json, name="health_json"),
+    path("sitemap.xml", views.sitemap_xml, name="sitemap_xml"),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

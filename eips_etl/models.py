@@ -38,6 +38,10 @@ class Commit(models.Model):
     message = models.TextField(default="", null=False)
     parents = ArrayField(models.CharField(max_length=40))
 
+    @property
+    def link(self):
+        return f"/commits/commit-{self.commit_id}.html"
+
     def __str__(self) -> str:
         return str(self.commit_id)[:7]
 
@@ -159,3 +163,12 @@ class Document(models.Model):
                     authors.append(author)
 
         return new_doc, authors
+
+
+class Sitemap(models.Model):
+    sitemap_id = models.AutoField(primary_key=True)
+    generation_time = models.DateTimeField(auto_now_add=True)
+    xml_data = models.TextField()
+
+    def __repr__(self) -> str:
+        return f"<Sitemap sitemap_id={self.sitemap_id} generation_time={self.generation_time}>"
