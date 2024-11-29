@@ -23,7 +23,12 @@ def index_html(request: HttpRequest) -> HttpResponse:
     return render(
         request,
         "index.html",
-        context=dict(commits=commits, eips=eips, ercs=ercs, highlights=highlights),
+        context=dict(
+            commits=commits,
+            eips=eips,
+            ercs=ercs,
+            highlights=highlights,
+        ),
     )
 
 
@@ -61,7 +66,11 @@ def search_html(request: HttpRequest) -> HttpResponse:
     return render(
         request,
         "search.html",
-        context=dict(q=q, doc_hits=doc_hits, commit_hits=commit_hits),
+        context=dict(
+            q=q,
+            doc_hits=doc_hits,
+            commit_hits=commit_hits,
+        ),
     )
 
 
@@ -71,7 +80,11 @@ def search_json(request: HttpRequest) -> HttpResponse:
 
 def eip_html(request: HttpRequest, doc_id: int) -> HttpResponse:
     if doc := get_document(DocumentType.EIP, doc_id):
-        return render(request, "document.html", context=dict(**doc))
+        return render(
+            request,
+            "document.html",
+            context=dict(**doc),
+        )
 
     return render(
         request,
@@ -89,7 +102,11 @@ def eip_json(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 def erc_html(request: HttpRequest, doc_id: int) -> HttpResponse:
     if doc := get_document(DocumentType.ERC, doc_id):
-        return render(request, "document.html", context=dict(**doc))
+        return render(
+            request,
+            "document.html",
+            context=dict(**doc),
+        )
 
     return render(
         request,
@@ -117,10 +134,11 @@ def commit_html(request: HttpRequest, commit_id: str) -> HttpResponse:
         return render(
             request,
             "commit.html",
-            context=dict(**commit, docs=docs, document_type=document_type),
-            content_type=None,
-            status=None,
-            using=None,
+            context=dict(
+                **commit,
+                docs=docs,
+                document_type=document_type,
+            ),
         )
 
     return render(

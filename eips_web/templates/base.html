@@ -1,10 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en-US" prefix="og: https://ogp.me/ns#">
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{% block metadescription %}Ethereum Improvement Proposal and Ethereum Request for Comment design document explorer{% endblock %}">
+    <meta property="og:title" content="{% block metatitle %}{% endblock %}" />
+    <meta property="og:site_name" content="EIPs.exposed" />
+    <title>{% block title %}{% endblock %} - EIPs.exposed</title>
+
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'codehilite.css' %}">
+    <link rel="search" type="application/opensearchdescription+xml" title="EIPs.exposed document search" href="/static/osd.xml" />
     <script type="text/javascript" src="/static/konva.min.js"></script>
     <script type="text/javascript" src="/static/pixelateLogo.js"></script>
 </head>

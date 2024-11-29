@@ -4,7 +4,9 @@
 {% load ghusername %}
 {% load markdown %}
 
-{% block title %}{{ document_type }}-{{ document_id }}{% endblock %}
+{% block title %}Commit {{ commit_id }}{% endblock %}
+{% block metatitle %}Commit {{ commit_id }}{% endblock %}
+{% block metadescription %}{{ message|truncatewords:250 }}{% endblock %}
 
 {% block content %}
     <h1>Commit {{ commit_id|slice:":7" }}</h1>

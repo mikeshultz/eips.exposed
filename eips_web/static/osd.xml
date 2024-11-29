@@ -1,0 +1,10 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>EIPs.exposed</ShortName>
+  <Description>Ethereum Improvement Proposals and Ethereum Requests for Comment design docs search</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">https://eips.exposed/static/icon-16x16.ico</Image>
+  <Image width="64" height="64" type="image/png">https://eips.exposed/static/icon-64x64.png</Image>
+  <Url type="text/html" template="https://eips.exposed/search.html?q={searchTerms}"/>
+  <moz:SearchForm>https://eips.exposed/search.html</moz:SearchForm>
+</OpenSearchDescription>

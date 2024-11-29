@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load markdown %}
 
-{% block title %}Search{% endblock %}
+{% block title %}Search results for "{{ q }}"...{% endblock %}
+{% block metatitle %}Search results for '{{ q }}'{% endblock %}
+{% block metadescription %}Ethereum design document search results.{% endblock %}
 
 {% block content %}
     <div class="container">

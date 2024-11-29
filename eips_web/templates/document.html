@@ -5,9 +5,11 @@
 {% load markdown %}
 
 {% block title %}{{ document_type }}-{{ document_id }}{% endblock %}
+{% block metatitle %}{{ document_type }}-{{ document_id }} - {{ title }}{% endblock %}
+{% block metadescription %}{% if description %}{{ description|truncatewords:250 }}{% else %}{{ body|markdownsnippet:250 }}{% endif %}{% endblock %}
 
 {% block content %}
-    <h1>{{ document_type }}-{{ document_id }}</h1>
+    <h1>{{ document_type }}-{{ document_id }} - {{ title }}</h1>
     <div class="doc-meta">
         <div class="document-header">
             <table>
