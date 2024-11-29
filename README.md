@@ -34,7 +34,8 @@ Short term informal TODO.
 - [X] Dockerfiles for services
 - [X] Docker compose for local dev
 - [X] Kubernetes helm charts and get ready for rollout
-- [ ] Mobile support
+- [X] Mobile support
+- [ ] Add microdata for better sharing and search results
 - [ ] Get errors from python-eips and store in DB for reference and debugging
 - [ ] Figure out a way to intelligently understand what the author meant by `requires` (EIPs or ERCs)
 - [ ] Show commit history on document page
