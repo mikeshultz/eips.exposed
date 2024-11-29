@@ -19,11 +19,14 @@ services:
       - /tmp/typesense-data:/data
     ports:
       - "0.0.0.0:8109:8108"
+    environment:
+      TYPESENSE_API_KEY: asdf1234
 
   migrate:
     build:
       context: .
-      dockerfile: ./devops/dockerfiles/Dockerfile.migrate
+      dockerfile: ./devops/dockerfiles/Dockerfile.web
+    entrypoint: ["bash", "./migrate-entrypoint.sh"]
     networks:
       - eips
     # volumes:
@@ -32,6 +35,7 @@ services:
       DATABASE_HOST: db
       DATABASE_PASS: eips
       TYPESENSE_HOST: search
+      TYPESENSE_API_KEY: asdf1234
     depends_on:
       db:
         condition: service_started
@@ -41,7 +45,8 @@ services:
   update:
     build:
       context: .
-      dockerfile: ./devops/dockerfiles/Dockerfile.update
+      dockerfile: ./devops/dockerfiles/Dockerfile.web
+    entrypoint: ["bash", "./update-entrypoint.sh"]
     networks:
       - eips
     # volumes:
@@ -49,6 +54,7 @@ services:
     environment:
       DATABASE_HOST: db
       DATABASE_PASS: eips
+      TYPESENSE_API_KEY: asdf1234
     depends_on:
       db:
         condition: service_started
