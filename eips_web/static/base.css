@@ -108,10 +108,6 @@ ul.commit-list li a:visited .commit-id {
 .doc-meta {
     display: grid;
     grid-template-columns: auto auto;
-    /*border-color: var(--background-secondary-light);
-    border-style: solid;
-    border-width: 0 0 1px 0;
-    padding-bottom: 1rem;*/
 }
 .doc-meta .document-header {
     grid-column: 1;
@@ -133,7 +129,6 @@ ul.commit-list li a:visited .commit-id {
 .doc-meta .document-header table tr td ul li p { margin: 0; }
 
 .doc-meta .side-box {
-    display: block;
     grid-column: 2;
     padding-left: 1rem;
 }
@@ -156,12 +151,12 @@ ul.commit-list li a:visited .commit-id {
 .searchbox { margin-top: 1.5rem; }
 .searchbox input, .searchbox button {
     background: var(--background-secondary-light);
+    border-width: 0px;
+    padding: 0.25rem;
 }
 .searchbox input {
-    height: 2.5rem;
     width: calc(100% - 150px);
     font-size: 2rem;
-    padding: 0;
     margin: 0;
     border: 1px solid #c80046;
 }
@@ -169,11 +164,10 @@ ul.commit-list li a:visited .commit-id {
     display: inline-block;    
 }
 .searchbox button {
-    height: 2.5rem;
+    /*height: 2.5rem;*/
     width: 130px;
     font-size: 2rem;
     margin: 1px;
-    padding: 0;
     border: 1px solid #c80046;
 }
 
@@ -244,4 +238,14 @@ ul.pop-list { list-style-type: none; padding: 0; }
     .container .row .right1 {
         grid-column: 1;
     }
+
+
+    .doc-meta {
+        grid-template-rows: auto;
+    }
+    .doc-meta .side-box { grid-column: 1; }
+    .doc-meta .document-header { font-size: 75%; }
+
+    .searchbox input { width: calc(100vw - 5rem); }
+    .searchbox button { display: none; }
 }
