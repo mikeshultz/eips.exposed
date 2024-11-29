@@ -21,14 +21,18 @@
       logo.cache();
       logo.filters([Konva.Filters.Pixelate]);
       logo.pixelSize(1)
+
+      function onClick() {
+        window.location = '/';
+      }
+
+      logo.on('click', onClick)
+      logo.on('tap', onClick)
       logo.on('mouseover', function () {
         logo.pixelSize(20);
       })
       logo.on('mouseout', function () {
         logo.pixelSize(1);
-      })
-      logo.on('click', function () {
-        window.location = '/';
       })
     };
     image.src = '/static/logo.svg';
