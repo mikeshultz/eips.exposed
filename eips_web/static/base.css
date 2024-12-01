@@ -195,6 +195,12 @@ ul.search-results li p { font-style: italic; margin-top: 0; }
     grid-column: 3 / 4;
 }
 
+table.tabular { font-size: 75%; }
+table.tabular td { padding: 0.5rem; }
+table.tabular tbody tr:nth-child(odd) {
+    background-color: var(--background-secondary-light);
+}
+
 ul.pop-list { list-style-type: none; padding: 0; }
 
 @media (prefers-color-scheme: dark) {
@@ -220,6 +226,9 @@ ul.pop-list { list-style-type: none; padding: 0; }
     }
     .searchbox input, .searchbox button {
         background: var(--background-secondary-dark);
+    }
+    table.tabular tbody tr:nth-child(odd) {
+        background-color: var(--background-secondary-dark);
     }
 }
 
