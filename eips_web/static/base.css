@@ -34,6 +34,7 @@ a { color: var(--link); }
 a:visited { color: var(--link-visited); }
 
 header { margin-bottom: 1rem; }
+footer { text-align: center; }
 
 body {
     background-color: var(--background-light);

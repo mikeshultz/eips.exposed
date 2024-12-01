@@ -75,8 +75,8 @@ class Command(BaseCommand):
         document_schema = {
             "name": "document",
             "fields": [
-                {"name": "document_id", "type": "int32", "facet": True},
-                {"name": "document_id_string", "type": "string"},
+                {"name": "document_number", "type": "int32", "facet": True},
+                {"name": "document_number_string", "type": "string"},
                 {"name": "commit", "type": "string", "facet": True},
                 {"name": "document_type", "type": "string", "facet": True},
                 {"name": "created", "type": "int64"},
@@ -117,7 +117,7 @@ class Command(BaseCommand):
             doc = dump_dict(
                 document,
                 fields=[
-                    "document_id",
+                    "document_number",
                     "commit",
                     "document_type",
                     "created",
@@ -138,6 +138,8 @@ class Command(BaseCommand):
             if not doc.get("updated"):
                 doc["updated"] = doc["created"]
 
-            doc["document_id_string"] = f"{doc['document_type']}-{doc['document_id']}"
+            doc["document_number_string"] = (
+                f"{doc['document_type']}-{doc['document_number']}"
+            )
 
             client.collections["document"].documents.create(doc)

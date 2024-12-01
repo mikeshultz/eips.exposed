@@ -13,7 +13,7 @@ client: typesense.Client | None = None
 @dataclass
 class DocumentHit:
     document_type: str
-    document_id: int
+    document_number: int
     link: str
     title: str
     snippet: str
@@ -53,9 +53,9 @@ def search(query: str, page: int = 1) -> tuple[list[DocumentHit], list[CommitHit
                 {
                     "collection": "document",
                     "q": query,
-                    "query_by": "document_id_string,document_type,title,description,commit,status,category,type,body",
+                    "query_by": "document_number_string,document_type,title,description,commit,status,category,type,body",
                     "sort_by": "_text_match:desc,updated:desc,created:desc",
-                    "group_by": "document_type,document_id",
+                    "group_by": "document_type,document_number",
                     "group_limit": 1,
                     # "facet_by": "document_type,type",
                     "page": page,
@@ -83,14 +83,14 @@ def search(query: str, page: int = 1) -> tuple[list[DocumentHit], list[CommitHit
     # docs
     for group in results["results"][0].get("grouped_hits", []):
         document_type = group["group_key"][0]
-        document_id = group["group_key"][1]
+        document_number = group["group_key"][1]
         for hit in group.get("hits", []):
             if doc := hit.get("document"):
-                link = f"/{document_type.lower()}s/{document_type.lower()}-{document_id}.html"
+                link = f"/{document_type.lower()}s/{document_type.lower()}-{document_number}.html"
                 docs.append(
                     DocumentHit(
                         document_type=document_type,
-                        document_id=document_id,
+                        document_number=document_number,
                         link=link,
                         title=doc["title"],
                         snippet=hit["highlights"][0]["snippet"],

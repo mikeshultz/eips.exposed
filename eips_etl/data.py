@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Q
 from eips.enum import DocumentType
 
-from eips_etl.models import Commit, Document
+from eips_etl.models import Commit, Document, DocumentError
 from eips_web.object import SitemapURL
 
 # Model prop filters
@@ -22,6 +22,7 @@ COMMIT_PROPS = [
 ]
 DOCUMENT_PROPS = [
     "document_id",
+    "document_number",
     "commit",
     "document_type",
     "created",
@@ -54,12 +55,12 @@ HIGHLIGHTS = [
 @dataclass
 class Highlight:
     document_type: str
-    document_id: str
+    document_number: str
     text: str
 
     @property
     def link(self) -> str:
-        return f"/{self.document_type.lower()}s/{self.document_type.lower()}-{self.document_id}.html"
+        return f"/{self.document_type.lower()}s/{self.document_type.lower()}-{self.document_number}.html"
 
 
 def dump_model(
@@ -89,12 +90,12 @@ def get_latest_commits(count: int) -> Sequence[Commit]:
 
 
 def get_document(
-    doc_type: type[DocumentType], doc_id: int, commit: str | None = None
+    doc_type: type[DocumentType], doc_num: int, commit: str | None = None
 ) -> Document | None:
     try:
         fkwargs = {
             "document_type": doc_type,
-            "document_id": doc_id,
+            "document_number": doc_num,
         }
 
         if commit:
@@ -144,7 +145,7 @@ def get_popular_docs(doc_type: type[DocumentType], count: int) -> Sequence[Docum
                 FROM eips_etl_commit sc
                 JOIN eips_etl_document sd USING (commit_id)
                 WHERE sd.document_type = d.document_type
-                AND sd.document_id = d.document_id
+                AND sd.document_number = d.document_number
             )
         )
         WHERE d.document_type = '{doc_type.value}'
@@ -156,18 +157,20 @@ def get_popular_docs(doc_type: type[DocumentType], count: int) -> Sequence[Docum
 
 def get_highlights() -> Sequence[Document]:
     where: models.QuerySet = Q()
-    for doc_type, doc_id in HIGHLIGHTS:
-        # where |= Document.objects.filter(document_id=doc_id, document_type=doc_type)
-        where |= Q(document_id=doc_id, document_type=doc_type)
+    for doc_type, doc_num in HIGHLIGHTS:
+        # where |= Document.objects.filter(document_number=doc_num, document_type=doc_type)
+        where |= Q(document_number=doc_num, document_type=doc_type)
 
     highlights = []
     for doc in (
-        Document.objects.filter(where).values("document_type", "document_id").distinct()
+        Document.objects.filter(where)
+        .values("document_type", "document_number")
+        .distinct()
     ):
-        text = f"{doc['document_type']}-{doc['document_id']}"
+        text = f"{doc['document_type']}-{doc['document_number']}"
         highlights.append(
             Highlight(
-                document_id=doc["document_id"],
+                document_number=doc["document_number"],
                 document_type=doc["document_type"],
                 text=text,
             )
@@ -209,3 +212,13 @@ def generate_sitemap() -> Iterator[SitemapURL]:
             priority="0.4",
             lastmod=commit.commit_time.isoformat(),
         )
+
+
+def get_errors_paginated(page: int = 1, count: int = 100):
+    return (
+        DocumentError.objects.select_related("document")
+        .select_related("document__commit")
+        .order_by("-document__commit__commit_time", "-document__updated")[
+            count * (page - 1) : count * page
+        ]
+    )

@@ -47,17 +47,17 @@ class Command(BaseCommand):
                 "q": " ".join(options["term"]),
                 "query_by": "title,description,commit,document_type,status,category,type,body",
                 "sort_by": "updated:desc,created:desc",
-                "group_by": "document_type,document_id",
+                "group_by": "document_type,document_number",
                 # "facet_by": "document_type,type",
             }
         )
 
         for group in result.get("grouped_hits", []):
             document_type = group["group_key"][0]
-            document_id = group["group_key"][1]
+            document_number = group["group_key"][1]
             for hit in group.get("hits", []):
                 doc = hit.get("document", {})
                 print(
-                    f"{document_type}-{document_id}: {doc['title']} ({datetime.fromtimestamp(doc['updated'], tz=UTC)})"
+                    f"{document_type}-{document_number}: {doc['title']} ({datetime.fromtimestamp(doc['updated'], tz=UTC)})"
                 )
                 break  # only want the latest

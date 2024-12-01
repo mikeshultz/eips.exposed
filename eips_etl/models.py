@@ -66,13 +66,15 @@ class Commit(models.Model):
 
 
 class Document(models.Model):
-    id = models.AutoField(primary_key=True)
-    document_id = models.IntegerField()
+    document_id = models.AutoField(primary_key=True)
+    document_number = models.IntegerField()
     # commit = models.CharField(max_length=40)
     commit = models.ForeignKey("Commit", on_delete=models.CASCADE)
     document_type = models.CharField(
         max_length=3, choices=enum_to_choices(DocumentType)
     )
+    # If true, document will be reimported
+    reimport = models.BooleanField(default=False)
     created = models.DateTimeField(null=True)
     updated = models.DateTimeField(null=True, default=None)
 
@@ -108,18 +110,18 @@ class Document(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=["document_id", "document_type"]),
+            models.Index(fields=["document_number", "document_type"]),
             models.Index(fields=["commit"]),
         ]
-        unique_together = [["document_id", "commit"]]
+        unique_together = [["document_number", "commit"]]
 
     @property
     def link(self):
-        return f"/{self.document_type.lower()}s/{self.document_type.lower()}-{self.document_id}.html"
+        return f"/{self.document_type.lower()}s/{self.document_type.lower()}-{self.document_number}.html"
 
     @property
     def name(self):
-        return f"{self.document_type}-{self.document_id}"
+        return f"{self.document_type}-{self.document_number}"
 
     def __str__(self) -> str:
         return f"<Document: {self.name}: {self.title}>"
@@ -127,7 +129,7 @@ class Document(models.Model):
     @classmethod
     def from_dict(cls, commit: Commit, doc: dict) -> tuple[Self, list[Person]]:
         new_doc = cls(
-            document_id=doc["id"],
+            document_number=doc["id"],
             commit=commit,
             document_type=doc["document_type"].value,
             created=doc["created"],
@@ -172,3 +174,12 @@ class Sitemap(models.Model):
 
     def __repr__(self) -> str:
         return f"<Sitemap sitemap_id={self.sitemap_id} generation_time={self.generation_time}>"
+
+
+class DocumentError(models.Model):
+    error_id = models.AutoField(primary_key=True)
+    document = models.ForeignKey(
+        "Document", on_delete=models.CASCADE, related_name="errors"
+    )
+    import_batch = models.CharField(max_length=255)
+    message = models.CharField(max_length=4096)

@@ -7,11 +7,12 @@ from eips_etl.data import (
     get_commit,
     get_document,
     get_documents_by_commit,
+    get_errors_paginated,
     get_highlights,
     get_latest_commits,
     get_popular_docs,
 )
-from eips_etl.models import Commit, Sitemap
+from eips_etl.models import Commit, DocumentError, Sitemap
 from eips_etl.search import search
 from eips_web.util import exctract_move_dest
 
@@ -169,6 +170,28 @@ def commit_json(request: HttpRequest, commit_id: str) -> HttpResponse:
         .order_by("-created")
         .values(COMMIT_PROPS)
         .first()
+    )
+
+
+def parse_errors_html(request: HttpRequest) -> HttpResponse:
+    try:
+        page = int(request.GET.get("p", "1"))
+    except ValueError:
+        page = 1
+
+    page_size = 100
+    count = DocumentError.objects.count()
+    pages = count // page_size
+    errors = get_errors_paginated(page, page_size)
+
+    return render(
+        request,
+        "parse-errors.html",
+        context=dict(
+            page=page,
+            pages=pages,
+            errors=errors,
+        ),
     )
 
 

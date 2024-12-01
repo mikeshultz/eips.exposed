@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.1.2,<6",
-    "eips>=0.1.0",
+    "eips>=0.2.0",
     "markdown>=3.7",
     "psycopg2-binary>=2.9.10",
     "pygments>=2.18.0",
@@ -18,3 +18,6 @@ dependencies = [
 dev = [
     "pudb>=2024.1.3",
 ]
+
+# [tool.uv.sources]
+# eips = { path = "../eips", editable = true }
