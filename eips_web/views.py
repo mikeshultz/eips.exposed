@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import render
-from eips.enum import DocumentType
+from django.shortcuts import redirect, render
+from eips.enum import DocumentType, EIP1Status
 from typesense.exceptions import ObjectNotFound
 
 from eips_etl.data import (
@@ -13,6 +13,7 @@ from eips_etl.data import (
 )
 from eips_etl.models import Commit, Sitemap
 from eips_etl.search import search
+from eips_web.util import exctract_move_dest
 
 
 def index_html(request: HttpRequest) -> HttpResponse:
@@ -80,6 +81,10 @@ def search_json(request: HttpRequest) -> HttpResponse:
 
 def eip_html(request: HttpRequest, doc_id: int) -> HttpResponse:
     if doc := get_document(DocumentType.EIP, doc_id):
+        if doc.get("status") == EIP1Status.MOVED:
+            if dest := exctract_move_dest(doc["body"]):
+                return redirect(dest, permanent=True)
+
         return render(
             request,
             "document.html",
@@ -96,12 +101,18 @@ def eip_html(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 def eip_json(request: HttpRequest, doc_id: int) -> HttpResponse:
     if doc := get_document(DocumentType.EIP, doc_id):
+        if doc.get("status") == EIP1Status.MOVED:
+            if dest := exctract_move_dest(doc["body"]):
+                return redirect(dest, permanent=True)
         return JsonResponse(doc)
     return JsonResponse({"error": "Document Not Found"}, status=404)
 
 
 def erc_html(request: HttpRequest, doc_id: int) -> HttpResponse:
     if doc := get_document(DocumentType.ERC, doc_id):
+        if doc.get("status") == EIP1Status.MOVED:
+            if dest := exctract_move_dest(doc["body"]):
+                return redirect(dest, permanent=True)
         return render(
             request,
             "document.html",
@@ -118,6 +129,9 @@ def erc_html(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 def erc_json(request: HttpRequest, doc_id: int) -> HttpResponse:
     if doc := get_document(DocumentType.ERC, doc_id):
+        if doc.get("status") == EIP1Status.MOVED:
+            if dest := exctract_move_dest(doc["body"]):
+                return redirect(dest, permanent=True)
         return JsonResponse(doc)
     return JsonResponse({"error": "Document Not Found"}, status=404)
 
