@@ -44,7 +44,11 @@ def search_html(request: HttpRequest) -> HttpResponse:
         )
 
     q = request.GET.get("q")
-    page = request.GET.get("p", "1")
+    page: int = 1
+    try:
+        page = int(request.GET.get("p", "1"))
+    except ValueError:
+        pass
 
     if not isinstance(page, str):
         return render(
@@ -54,9 +58,8 @@ def search_html(request: HttpRequest) -> HttpResponse:
             status=400,
         )
 
-    print("--q:", q)
     try:
-        doc_hits, commit_hits = search(q, int(page))
+        doc_hits, commit_hits = search(q, page)
     except ObjectNotFound:
         return render(
             request,
