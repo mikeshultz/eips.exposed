@@ -11,8 +11,8 @@
         <thead>
             <tr>
                 <th>Commit</th>
-                <th>Import batch</th>
                 <th>Document</th>
+                <th>Import batch</th>
                 <th>Error Message</th>
             </tr>
         </thead>
@@ -23,10 +23,10 @@
                     <a href="/commits/commit-{{ error.document.commit_id }}.html">{{ error.document.commit_id|slice:":7" }}</a><br>
                     {{ error.document.commit.commit_time|since }} ago
                 </td>
-                <td>{{ error.import_batch }}</td>
                 <td>
                     <a href="{{ error.document.link }}">{{ error.document.name }}</a>
                 </td>
+                <td>{{ error.import_batch }}</td>
                 <td>{{ error.message }}</td>
             </tr>
             {% endfor %}
