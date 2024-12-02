@@ -4,12 +4,12 @@
 {% load ghusername %}
 {% load markdown %}
 
-{% block title %}{{ document_type }}-{{ document_id }}{% endblock %}
-{% block metatitle %}{{ document_type }}-{{ document_id }} - {{ title }}{% endblock %}
+{% block title %}{{ document_type }}-{{ document_number }}{% endblock %}
+{% block metatitle %}{{ document_type }}-{{ document_number }} - {{ title }}{% endblock %}
 {% block metadescription %}{% if description %}{{ description|truncatewords:250 }}{% else %}{{ body|markdownsnippet:250 }}{% endif %}{% endblock %}
 
 {% block content %}
-    <h1>{{ document_type }}-{{ document_id }} - {{ title }}</h1>
+    <h1>{{ document_type }}-{{ document_number }} - {{ title }}</h1>
     <div class="doc-meta">
         <div class="document-header">
             <table>
@@ -103,11 +103,14 @@
         </div>
         <div class="side-box">
             <p class="description">{{ description }}</p>
-            <div class="doc-links">
+            <ul class="doc-links">
             {% if discussions_to %}
-                <a href="{{ discussions_to }}">{{ discussions_to }}</a>
+                <li><a href="{{ discussions_to }}">Discussion</a></li>
             {% endif %}
-            </div>
+            {% if source_link %}
+                <li><a href="{{ source_link }}">Source</a></li>
+            {% endif %}
+            </ul>
         </div>
     </div>
     <div class="body">{{ body|fixlinks|ghusername|markdown }}</div>

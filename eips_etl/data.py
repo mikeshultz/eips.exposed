@@ -119,6 +119,8 @@ def get_document(
         print("-doc.authors:", doc.authors)
         print("-authors:", authors)
         doc_dict["authors"] = [a.person_string for a in authors]
+        doc_dict["link"] = doc.link
+        doc_dict["source_link"] = doc.source_link
 
         return doc_dict
     except Document.DoesNotExist:

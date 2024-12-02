@@ -39,7 +39,7 @@
                         <h2>Updated EIPs</h2>
                         <ul class="pop-list">
                         {% for pop in eips %}
-                            <li><a href="/eips/eip-{{ pop.document_id }}.html"><span class="doc-id">EIP-{{pop.document_id}}</span> - {{ pop.title }}</a></li>
+                            <li><a href="/eips/eip-{{ pop.document_number }}.html"><span class="doc-id">EIP-{{pop.document_number}}</span> - {{ pop.title }}</a></li>
                         {% endfor %}
                         </ul>
                     </div>
@@ -48,7 +48,7 @@
                         <h2>Updated ERCs</h2>
                         <ul class="pop-list">
                         {% for pop in ercs %}
-                            <li><a href="/ercs/erc-{{ pop.document_id }}.html"><span class="doc-id">ERC-{{pop.document_id}}</span> - {{ pop.title }}</a></li>
+                            <li><a href="/ercs/erc-{{ pop.document_number }}.html"><span class="doc-id">ERC-{{pop.document_number}}</span> - {{ pop.title }}</a></li>
                         {% endfor %}
                         </ul>
                     </div>

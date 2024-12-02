@@ -120,6 +120,10 @@ class Document(models.Model):
         return f"/{self.document_type.lower()}s/{self.document_type.lower()}-{self.document_number}.html"
 
     @property
+    def source_link(self):
+        return f"https://github.com/ethereum/{self.document_type.upper()}s/blob/master/{self.document_type.upper()}S/{self.document_type.lower()}-{self.document_number}.md"
+
+    @property
     def name(self):
         return f"{self.document_type}-{self.document_number}"
 

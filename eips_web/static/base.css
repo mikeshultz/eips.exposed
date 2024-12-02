@@ -203,6 +203,9 @@ table.tabular tbody tr:nth-child(odd) {
 
 ul.pop-list { list-style-type: none; padding: 0; }
 
+ul.doc-links { list-style-type: none; padding: 0; }
+ul.doc-links li { display: inline; margin-right: 1rem; }
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: var(--background-dark);
