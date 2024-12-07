@@ -24,7 +24,7 @@ def import_repo(mecha: type[EIPs] | type[ERCs], /, **kwargs) -> int:
         updates = {k: v for k, v in dinst.__dict__.items() if k in doc_fields}
 
         existing = Document.objects.filter(
-            document_number=doc.id, commit_id=commit_id, reimport=False
+            document_number=doc.id, commit_id=commit_id
         ).first()
 
         def save_and_add_rels():
