@@ -214,3 +214,11 @@ def sitemap_xml(request: HttpRequest) -> HttpResponse:
         )
 
     return HttpResponse(sitemap.xml_data, content_type="text/xml")
+
+
+def deprecated_eip_redirect(request: HttpRequest, doc_id: int) -> HttpResponse:
+    return redirect(f"/eips/eip-{doc_id}.html", permanent=True)
+
+
+def deprecated_erc_redirect(request: HttpRequest, doc_id: int) -> HttpResponse:
+    return redirect(f"/ercs/erc-{doc_id}.html", permanent=True)
