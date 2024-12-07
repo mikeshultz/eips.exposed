@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from eips.enum import DocumentType, EIP1Status
+from prometheus_client import Counter
 from typesense.exceptions import ObjectNotFound
 
 from eips_etl.data import (
@@ -15,6 +16,10 @@ from eips_etl.data import (
 from eips_etl.models import Commit, DocumentError, Sitemap
 from eips_etl.search import search
 from eips_web.util import exctract_move_dest
+
+eip_counter = Counter("eip_view", "View of an EIP document", ["eip_number"])
+erc_counter = Counter("erc_view", "View of an ERC document", ["erc_number"])
+commit_counter = Counter("commit_view", "View of a commit", ["commit_id"])
 
 
 def index_html(request: HttpRequest) -> HttpResponse:
@@ -84,6 +89,8 @@ def search_json(request: HttpRequest) -> HttpResponse:
 
 
 def eip_html(request: HttpRequest, doc_id: int) -> HttpResponse:
+    eip_counter.labels(doc_id).inc()
+
     if doc := get_document(DocumentType.EIP, doc_id):
         if doc.get("status") == EIP1Status.MOVED:
             if dest := exctract_move_dest(doc["body"]):
@@ -104,6 +111,8 @@ def eip_html(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 
 def eip_json(request: HttpRequest, doc_id: int) -> HttpResponse:
+    eip_counter.labels(doc_id).inc()
+
     if doc := get_document(DocumentType.EIP, doc_id):
         if doc.get("status") == EIP1Status.MOVED:
             if dest := exctract_move_dest(doc["body"]):
@@ -113,6 +122,8 @@ def eip_json(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 
 def erc_html(request: HttpRequest, doc_id: int) -> HttpResponse:
+    erc_counter.labels(doc_id).inc()
+
     if doc := get_document(DocumentType.ERC, doc_id):
         if doc.get("status") == EIP1Status.MOVED:
             if dest := exctract_move_dest(doc["body"]):
@@ -132,6 +143,8 @@ def erc_html(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 
 def erc_json(request: HttpRequest, doc_id: int) -> HttpResponse:
+    erc_counter.labels(doc_id).inc()
+
     if doc := get_document(DocumentType.ERC, doc_id):
         if doc.get("status") == EIP1Status.MOVED:
             if dest := exctract_move_dest(doc["body"]):
@@ -141,6 +154,8 @@ def erc_json(request: HttpRequest, doc_id: int) -> HttpResponse:
 
 
 def commit_html(request: HttpRequest, commit_id: str) -> HttpResponse:
+    commit_counter.labels(commit_id).inc()
+
     if commit := get_commit(commit_id):
         docs = get_documents_by_commit(commit_id)
 
@@ -168,6 +183,8 @@ def commit_html(request: HttpRequest, commit_id: str) -> HttpResponse:
 
 
 def commit_json(request: HttpRequest, commit_id: str) -> HttpResponse:
+    commit_counter.labels(commit_id).inc()
+
     return JsonResponse(
         Commit.objects.filter(commit_id=commit_id)
         .order_by("-created")
