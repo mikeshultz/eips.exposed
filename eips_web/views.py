@@ -53,9 +53,6 @@ def search_html(request: HttpRequest) -> HttpResponse:
     try:
         page = int(request.GET.get("p", "1"))
     except ValueError:
-        pass
-
-    if not isinstance(page, str):
         return render(
             request,
             "http_error.html",
