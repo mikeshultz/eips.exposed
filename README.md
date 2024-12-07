@@ -35,8 +35,12 @@ Short term informal TODO.
 - [X] Docker compose for local dev
 - [X] Kubernetes helm charts and get ready for rollout
 - [X] Mobile support
-- [ ] Add microdata for better sharing and search results
-- [ ] Get errors from python-eips and store in DB for reference and debugging
+- [X] Add microdata for better sharing and search results
+- [X] Add sitemap.xml
+- [X] Get errors from python-eips and store in DB for reference and debugging
+- [X] Link original documents, and format discussion link
+- [ ] Handle deleted docs (e.g. ERC-1 leftover from EIP fork)
+- [ ] Add browsing/directory page? By type/category? Need further categorization first?
 - [ ] Figure out a way to intelligently understand what the author meant by `requires` (EIPs or ERCs)
 - [ ] Show commit history on document page
 - [ ] Serve documents by commit (`/eips/eip-20.html?commit=666deadbeef666`)
