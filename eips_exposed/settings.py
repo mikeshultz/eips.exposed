@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     h.strip() for h in os.environ.get("ALLOWED_HOSTS", ".localhost").split(",")
 ]
 ALLOWED_CIDR_NETS = [
-    h.strip() for h in os.environ.get("ALLOWED_CIDR_NETS", "").split(",")
+    h.strip() for h in os.environ.get("ALLOWED_CIDR_NETS", "").split(",") if h
 ]
 
 
