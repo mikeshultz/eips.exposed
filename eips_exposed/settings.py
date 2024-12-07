@@ -31,6 +31,9 @@ DEBUG = bool(os.environ.get("DEBUG"))
 ALLOWED_HOSTS = [
     h.strip() for h in os.environ.get("ALLOWED_HOSTS", ".localhost").split(",")
 ]
+ALLOWED_CIDR_NETS = [
+    h.strip() for h in os.environ.get("ALLOWED_CIDR_NETS", "").split(",")
+]
 
 
 # Application definition
@@ -42,11 +45,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_prometheus",
     "eips_etl",
     "eips_web",
 ]
 
 MIDDLEWARE = [
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "allow_cidr.middleware.AllowCIDRMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -55,7 +61,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
+
+PROMETHEUS_METRIC_NAMESPACE = "eips_exposed"
 
 ROOT_URLCONF = "eips_exposed.urls"
 

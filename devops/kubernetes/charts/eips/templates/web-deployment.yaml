@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "eips-web.selectorLabels" . | nindent 8 }}
+        {{- include "eips-web.labels" . | nindent 8 }}
     spec:
       {{- with .Values.webImagePullSecrets }}
       imagePullSecrets:
@@ -56,6 +56,7 @@ spec:
         imagePullPolicy: {{ .Values.pullPolicy }}
         ports:
         - containerPort: 8000
+          name: web
         livenessProbe:
           httpGet:
             path: /health.json
@@ -78,6 +79,10 @@ spec:
         env:
         - name: ALLOWED_HOSTS
           value: {{ .Values.allowedHosts }}
+        {{ if .Values.allowedCidrs }}
+        - name: ALLOWED_CIDR_NETS
+          value: {{ .Values.allowedCidrs }}
+        {{ end }}
         - name: DATABASE_HOST
           valueFrom:
             secretKeyRef:

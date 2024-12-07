@@ -6,7 +6,7 @@ metadata:
     {{- include "eips-web.labels" . | nindent 4 }}
 spec:
   selector:
-    {{- include "eips-web.selectorLabels" . | nindent 6 }}
+    {{- include "eips-web.selectorLabels" . | nindent 4 }}
   ports:
     - protocol: TCP
       port: 8000

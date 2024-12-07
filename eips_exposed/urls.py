@@ -18,6 +18,7 @@ Including another URLconf
 from django.urls import include, path
 
 urlpatterns = [
+    path("", include("django_prometheus.urls")),
     path("etl/", include("eips_etl.urls")),
     path("", include("eips_web.urls")),
 ]

@@ -20,6 +20,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 
 {{- define "eips-web.selectorLabels" -}}
+app: {{ include "eips-web.fullname" . }}
 app.kubernetes.io/name: {{ include "eips-web.fullname" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

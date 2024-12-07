@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "eips-web.fullname" . }}
+  labels:
+    team: {{ include "eips-web.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "eips-web.fullname" . }}
+  podMetricsEndpoints:
+  - port: web

@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "eips-web.fullname" . }}
+  labels:
+    team: eips
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "eips-web.fullname" . }}
+  endpoints:
+  - port: http
