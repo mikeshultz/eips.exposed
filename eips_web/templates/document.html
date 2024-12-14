@@ -4,7 +4,7 @@
 {% load ghusername %}
 {% load markdown %}
 
-{% block title %}{{ document_type }}-{{ document_number }}{% endblock %}
+{% block title %}{{ document_type }}-{{ document_number }}{% if title %} - {{ title }}{% endif %}{% endblock %}
 {% block metatitle %}{{ document_type }}-{{ document_number }} - {{ title }}{% endblock %}
 {% block metadescription %}{% if description %}{{ description|truncatewords:250 }}{% else %}{{ body|markdownsnippet:250 }}{% endif %}{% endblock %}
 
