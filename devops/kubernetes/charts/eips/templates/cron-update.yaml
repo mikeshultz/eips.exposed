@@ -45,6 +45,7 @@ spec:
             - mountPath: /var/eips
               name: eips-volume
           restartPolicy: Never
+          concurrencyPolicy: Forbid
           volumes:
           - name: eips-volume
             emptyDir:
