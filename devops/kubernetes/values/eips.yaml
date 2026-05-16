@@ -18,3 +18,15 @@ ingress:
      hosts:
        - eips.exposed
        - www.eips.exposed
+
+gateway:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    acme.cert-manager.io/http01-edit-in-place: "true"
+  clusterGateway: borg-primary-gateway
+  clusterGatewayNamespace: nginx-gateway
+  hosts:
+    - eips.exposed
+    - www.eips.exposed
