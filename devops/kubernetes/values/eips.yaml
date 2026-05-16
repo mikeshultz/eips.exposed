@@ -1,23 +1,5 @@
 allowedHosts: eips.exposed,www.eips.exposed
 allowedCidrs: "10.0.0.0/8"
-ingress:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    acme.cert-manager.io/http01-edit-in-place: "true"
-  hosts:
-    - host: eips.exposed
-      paths:
-        - path: /
-          pathType: Prefix
-    - host: www.eips.exposed
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-   - secretName: eips-web-tls
-     hosts:
-       - eips.exposed
-       - www.eips.exposed
 
 gateway:
   enabled: true
